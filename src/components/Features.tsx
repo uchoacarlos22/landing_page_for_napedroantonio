@@ -1,4 +1,3 @@
-// src/components/Features.tsx
 import React from "react";
 import styled from "styled-components";
 import { breakpoints, colors } from "../theme";
@@ -7,108 +6,113 @@ import icon2 from "../assets/images/hero-icon-2.png.svg";
 import icon3 from "../assets/images/hero-icon-3.png.svg";
 import icon4 from "../assets/images/hero-icon-4.png.svg";
 
-const StyledFeaturesContainer = styled.div`
+const StyledFeaturesSection = styled.section`
   background-color: ${colors.primary};
-  padding: 1.5rem 1rem;
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  gap: 1rem;
   border: 3px solid ${colors.secondary};
-  left: 35%;
+  padding: 1rem; /* Aumentado o padding para melhor espaçamento */
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* Reduzido o gap para otimizar espaço */
+  text-align: center;
+  position: relative;
+  z-index: 5;
 
-  /* tablets: duas colunas */
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    justify-content: space-between;
-    padding: 1.25rem 0.75rem;
-  }
-
-  /* mobile: ocultar completamente */
   @media (max-width: ${breakpoints.mobileMax}) {
     display: none;
   }
+
+  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
+    padding: 1.5rem 1rem; /* Ajustado para tablets */
+    gap: 1rem; /* Ajustado para tablets */
+  }
 `;
 
-const StyledFeatureItem = styled.div`
+const StyledFeatureItem = styled.article`
   flex: 1;
-  padding: 0.5rem;
+  min-width: 220px;
+  max-width: 260px;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    opacity: 0.95;
+  }
 
   @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
     flex: 0 1 calc(50% - 1rem);
-    margin-bottom: 1rem;
   }
 `;
 
 const StyledFeatureIcon = styled.img`
   display: block;
-  margin: 0 auto 0.75rem;
-  height: 2rem;
+  margin-bottom: 1rem;
+  height: 3rem;
   width: auto;
 
   @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    height: 2.25rem;
-    margin-bottom: 0.5rem;
+    height: 2.5rem;
   }
 `;
 
 const StyledFeatureTitle = styled.h3`
   color: ${colors.background};
-  font-size: 0.9rem;
-  font-weight: 400;
-  margin-bottom: 0.25rem;
-  font-family: sans-serif;
-
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    font-size: 1rem;
-  }
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
 `;
 
 const StyledFeatureDescription = styled.p`
-  color: #ccc;
-  font-size: 0.7rem;
-  font-family: sans-serif;
-  line-height: 1.4;
-
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    font-size: 0.75rem;
-  }
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 90%;
 `;
 
-const Features: React.FC = () => (
-  <StyledFeaturesContainer>
-    <StyledFeatureItem>
-      <StyledFeatureIcon src={icon1} alt="Professional Builders" />
-      <StyledFeatureTitle>CONSTRUTORES PROFISSIONAIS</StyledFeatureTitle>
-      <StyledFeatureDescription>
-        Empregamos artesãos qualificados com anos de experiência.
-      </StyledFeatureDescription>
-    </StyledFeatureItem>
+const Features: React.FC = () => {
+  const items = [
+    {
+      icon: icon1,
+      title: "EQUIPE ESPECIALIZADA E EXPERIENTE",
+      description: "Profissionais experientes que constroem com qualidade e compromisso.",
+    },
+    {
+      icon: icon2,
+      title: "REFORMAS E CONSTRUÇÕES SOB MEDIDA",
+      description: "Desenvolvemos projetos personalizados para atender com excelência.",
+    },
+    {
+      icon: icon3,
+      title: "QUALIDADE EM CADA DETALHE",
+      description: "Usamos os melhores materiais e técnicas para garantir durabilidade e beleza.",
+    },
+    {
+      icon: icon4,
+      title: "SUPORTE DO COMEÇO AO FIM",
+      description: "Acompanhamos todas as etapas para que você tenha uma experiência tranquila.",
+    },
+  ];
 
-    <StyledFeatureItem>
-      <StyledFeatureIcon src={icon2} alt="Passionate About Work" />
-      <StyledFeatureTitle>APAIXONADOS PELO TRABALHO</StyledFeatureTitle>
-      <StyledFeatureDescription>
-        Somos apaixonados pelo que fazemos e temos orgulho do nosso trabalho.
-      </StyledFeatureDescription>
-    </StyledFeatureItem>
-
-    <StyledFeatureItem>
-      <StyledFeatureIcon src={icon3} alt="High Quality Guarantee" />
-      <StyledFeatureTitle>GARANTIA DE ALTA QUALIDADE</StyledFeatureTitle>
-      <StyledFeatureDescription>
-        Garantimos mão de obra e materiais de alta qualidade.
-      </StyledFeatureDescription>
-    </StyledFeatureItem>
-
-    <StyledFeatureItem>
-      <StyledFeatureIcon src={icon4} alt="Great Support Team" />
-      <StyledFeatureTitle>ÓTIMA EQUIPE DE SUPORTE</StyledFeatureTitle>
-      <StyledFeatureDescription>
-        Nossa equipe está sempre disponível para fornecer suporte e responder
-        perguntas.
-      </StyledFeatureDescription>
-    </StyledFeatureItem>
-  </StyledFeaturesContainer>
-);
+  return (
+    <StyledFeaturesSection aria-label="Principais diferenciais da empresa">
+      {items.map((item, index) => (
+        <StyledFeatureItem key={index}>
+          <StyledFeatureIcon src={item.icon} alt={item.title} />
+          <StyledFeatureTitle>{item.title}</StyledFeatureTitle>
+          <StyledFeatureDescription>{item.description}</StyledFeatureDescription>
+        </StyledFeatureItem>
+      ))}
+    </StyledFeaturesSection>
+  );
+};
 
 export default Features;

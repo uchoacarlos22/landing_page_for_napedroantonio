@@ -1,7 +1,26 @@
 import React from 'react';
 
     const Contact: React.FC = () => {
-      return (
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleWhatsApp = (e: React.FormEvent) => {
+    e.preventDefault();
+    const texto = `Olá! Meu nome é ${formData.name}. Gostaria de entrar em contato.\n\nE-mail: ${formData.email}\n\nMensagem: ${formData.message}`;
+    const uri = `https://wa.me/5511980743311?text=${encodeURIComponent(texto)}`;
+    window.open(uri, '_blank');
+  };
+
+
+  return (
+
         <section id="contact" className="py-20 bg-gray-100">
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-center text-[#3C3D41] mb-8">
@@ -32,7 +51,7 @@ import React from 'react';
                 </ul>
               </div>
               <div>
-                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleWhatsApp}>
                   <div className="mb-4">
                     <label
                       className="block text-gray-700 text-sm font-bold mb-2"
@@ -45,6 +64,8 @@ import React from 'react';
                       id="name"
                       type="text"
                       placeholder="Seu nome"
+                      required
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mb-4">
@@ -59,6 +80,8 @@ import React from 'react';
                       id="email"
                       type="email"
                       placeholder="Seu email"
+                      required
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="mb-6">
@@ -73,18 +96,21 @@ import React from 'react';
                       id="message"
                       rows={5}
                       placeholder="Sua mensagem"
+                      required
+                      onChange={handleChange}
                     ></textarea>
                   </div>
                   <div className="flex items-center justify-between">
                     <button
-                      className="bg-yellow-500 hover:bg-yellow-400 text-[#3C3D41] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                      type="button"
+                      className="bg-yellow-500 hover:bg-yellow-400 text-[#3C3D41] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                      type="submit"
                     >
-                      Enviar
+                      Falar no WhatsApp 💬
                     </button>
                   </div>
                 </form>
               </div>
+
             </div>
           </div>
         </section>

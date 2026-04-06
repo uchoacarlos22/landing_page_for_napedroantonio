@@ -1,130 +1,112 @@
 import React from "react";
 import styled from "styled-components";
-import { breakpoints, colors } from "../theme"; // ajuste conforme o caminho real
+import { breakpoints, colors } from "../theme";
+import aboutImage from "../assets/images/about_image.png";
 
-const WelcomeContainer = styled.div.attrs(() => ({ id: 'about' }))`
-  width: 72.5%;
-  margin: 40px auto;
-  align-content: center;
+const WelcomeContainer = styled.section.attrs(() => ({ id: "about" }))`
+  width: 75%;
+  margin: 60px auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
   background: ${colors.background};
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
   overflow: hidden;
 
   @media (max-width: ${breakpoints.tabletMax}) {
     grid-template-columns: 1fr;
-    max-height: none;
-    margin: 80px 20px;
-    width: 92%;
-  }
-
-  @media (max-width: ${breakpoints.mobileMax}) {
-    margin: 60px 15px;
-    width: 92%;
+    width: 90%;
+    margin: 60px auto;
   }
 `;
 
 const LeftSection = styled.div`
-  background: ${colors.background};
-  padding: 30px 0 20px 30px;
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  @media (max-width: ${breakpoints.tabletMax}) {
-    padding: 40px 30px 20px;
-  }
+  background-color: ${colors.background};
 
   @media (max-width: ${breakpoints.mobileMax}) {
-    padding: 30px 20px 10px;
+    padding: 30px 20px;
   }
 `;
 
-const WelcomeTitle = styled.h1`
+const WelcomeTitle = styled.h2`
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 800;
   color: ${colors.primary};
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   line-height: 1.2;
 
+  span {
+    color: ${colors.secondary};
+  }
+
   @media (max-width: ${breakpoints.tabletMax}) {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
 
   @media (max-width: ${breakpoints.mobileMax}) {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
 `;
 
-const WorkerImage = styled.div`
+const WorkerImage = styled.img`
   width: 100%;
-  height: 300px;
-  background: ${colors.border} url("/src/assets/images/about_image.png") center/cover
-    no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 1.1rem;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 4px;
 
   @media (max-width: ${breakpoints.tabletMax}) {
-    height: 250px;
+    height: 260px;
   }
 
   @media (max-width: ${breakpoints.mobileMax}) {
-    height: 200px;
+    height: 220px;
   }
 `;
 
 const RightSection = styled.div`
   background: ${colors.primary};
-  padding: 30px 20px;
   color: ${colors.background};
+  padding: 50px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   @media (max-width: ${breakpoints.tabletMax}) {
-    max-width: 92%;
     padding: 40px 30px;
   }
 
   @media (max-width: ${breakpoints.mobileMax}) {
-    max-width: 92%;
     padding: 30px 20px;
   }
 `;
 
 const DescriptionText = styled.p`
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
   margin-bottom: 40px;
-  color: #ddd;
-
-  @media (max-width: ${breakpoints.mobileMax}) {
-    font-size: 0.9rem;
-    margin-bottom: 30px;
-  }
+  color: rgba(255, 255, 255, 0.9);
 `;
 
 const SignatureSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 `;
 
 const SignatureName = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: ${colors.secondary};
   font-style: italic;
 `;
 
 const SignatureTitle = styled.div`
-  font-size: 0.9rem;
-  color: #ccc;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 1px;
 `;
@@ -134,29 +116,34 @@ const AboutUs: React.FC = () => {
     <WelcomeContainer>
       <LeftSection>
         <WelcomeTitle>
-          BEM VINDO A<br />
-          NAPEDROANTONIO
+          <span>Bem vindo ao </span>
+          <br />
+          NaPedroAntonio
+          <br />
+          Construções e Reformas
         </WelcomeTitle>
-        <WorkerImage />
+        <WorkerImage
+          src={aboutImage}
+          alt="Profissional da Pedro Antonio Construções em obra"
+        />
       </LeftSection>
 
       <RightSection>
         <DescriptionText>
-          Somos uma empresa de construção líder, dedicada a fornecer serviços de
-          alta qualidade. Nossa equipe de profissionais experientes está
-          comprometida em oferecer resultados excepcionais.
+          Somos especializados em{" "}
+          <strong>construção e reformas residenciais e comerciais</strong>,
+          unindo experiência, qualidade e compromisso. Nossa missão é
+          transformar projetos em realidade, com foco em{" "}
+          <strong>excelência, prazo e satisfação do cliente</strong>.
           <br />
           <br />
-          Nós nos esforçamos para exceder as expectativas de nossos clientes
-          através da inovação e excelência.
-          <br />
-          <br />
-          Contate-nos hoje para saber mais sobre nossos serviços.
+          Com uma equipe qualificada e apaixonada pelo que faz, garantimos
+          resultados que superam expectativas — do planejamento à entrega final.
         </DescriptionText>
 
         <SignatureSection>
-          <SignatureName>Antonio Almeida</SignatureName>
-          <SignatureTitle>Mestre de Obras e Fundador</SignatureTitle>
+          <SignatureName as="h3">Antonio Almeida</SignatureName>
+          <SignatureTitle as="p">Mestre de Obras e Fundador</SignatureTitle>
         </SignatureSection>
       </RightSection>
     </WelcomeContainer>

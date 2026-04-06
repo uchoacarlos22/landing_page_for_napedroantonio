@@ -8,5 +8,17 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "bg-gradient-conic": (value) => ({
+            "background-image": `conic-gradient(${value})`,
+          }),
+        },
+        { values: theme("conicGradientPositions") }
+      );
+    },
+  ],
 }
+

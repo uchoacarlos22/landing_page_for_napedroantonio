@@ -1,0 +1,339 @@
+{
+  "name": "NPA Agente - Registro de Interesse (Gemini 2.5 Pro)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "npa-agente",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-entrada",
+      "name": "Webhook_Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "npa-agente-webhook"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "mensagem_usuario",
+              "value": "={{ $json.body.message.trim().toLowerCase() }}"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}"
+            },
+            {
+              "name": "session_id",
+              "value": "={{ $json.body.session_id || $randomString(16) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "normalize-input",
+      "name": "Normalizar_Entrada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent",
+        "authentication": "none",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={{ {\"key\": \"AIzaSyC6x8DlkpwAFwf3YGM5e-WHe1xvyfQLheI\"} }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  \"contents\": [{\n    \"role\": \"user\",\n    \"parts\": [{\n      \"text\": \"Você é um assistente de atendimento da NPA Construções e Reformas. Analise a mensagem do cliente e extraia as informações relevantes em formato JSON.\\n\\nMensagem do cliente: \\\"\" + $('Normalizar_Entrada').item.json.mensagem_usuario + \"\\\"\\n\\nRetorne APENAS um objeto JSON válido com esta estrutura:\\n{\\n  \\\"nome\\\": \\\"nome do cliente ou null\\\",\\n  \\\"telefone\\\": \\\"telefone com DDD ou null\\\",\\n  \\\"email\\\": \\\"email ou null\\\",\\n  \\\"servico\\\": \\\"tipo de serviço mencionado (construção/reforma/orçamento/outro) ou null\\\",\\n  \\\"localizacao\\\": \\\"cidade/bairro mencionado ou null\\\",\\n  \\\"deseja_agendamento\\\": true/false,\\n  \\\"urgencia\\\": \\\"alta/média/baixa\\\",\\n  \\\"observacoes\\\": \\\"informações adicionais relevantes\\\",\\n  \\\"campos_faltantes\\\": [\\\"lista de campos que ainda precisam ser coletados\\\"]\\n}\"\n    }]\n  }]\n} }}",
+        "options": {}
+      },
+      "id": "gemini-interpretar",
+      "name": "Gemini - Interpretar Mensagem (IA)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai e parseia a resposta do Gemini\nconst response = $input.item.json.candidates[0].content.parts[0].text;\n\n// Remove markdown se houver\nconst jsonText = response.replace(/```json\\n?|```/g, '').trim();\n\nlet dadosCliente;\ntry {\n  dadosCliente = JSON.parse(jsonText);\n} catch (error) {\n  dadosCliente = {\n    nome: null,\n    telefone: null,\n    email: null,\n    servico: null,\n    localizacao: null,\n    deseja_agendamento: false,\n    urgencia: \"média\",\n    observacoes: \"Erro ao processar resposta da IA\",\n    campos_faltantes: [\"nome\", \"telefone\", \"email\"]\n  };\n}\n\n// Adiciona dados da sessão\ndadosCliente.session_id = $('Normalizar_Entrada').item.json.session_id;\ndadosCliente.timestamp = $('Normalizar_Entrada').item.json.timestamp;\ndadosCliente.mensagem_original = $('Normalizar_Entrada').item.json.mensagem_usuario;\n\nreturn { json: dadosCliente };"
+      },
+      "id": "parse-response",
+      "name": "Parse_Resposta_IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.campos_faltantes }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-missing-fields",
+      "name": "If - Campos Faltantes?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validação de telefone\nconst dados = $input.item.json;\nlet telefone = dados.telefone;\n\nif (!telefone) {\n  return {\n    json: {\n      ...dados,\n      telefone_valido: false,\n      mensagem_erro: \"Por favor, informe seu telefone com DDD para continuarmos.\"\n    }\n  };\n}\n\n// Remove caracteres não numéricos\ntelefone = telefone.replace(/\\D/g, '');\n\n// Verifica se tem 10 ou 11 dígitos (DDD + número)\nconst telefoneValido = telefone.length >= 10 && telefone.length <= 11;\n\nif (!telefoneValido) {\n  return {\n    json: {\n      ...dados,\n      telefone_valido: false,\n      mensagem_erro: \"O telefone informado parece estar incorreto. Por favor, informe com DDD (ex: 11987654321)\"\n    }\n  };\n}\n\nreturn {\n  json: {\n    ...dados,\n    telefone: telefone,\n    telefone_valido: true\n  }\n};"
+      },
+      "id": "validation-telefone",
+      "name": "Validation_Telefone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 150]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validação de e-mail\nconst dados = $input.item.json;\nconst email = dados.email;\n\nif (!email) {\n  return {\n    json: {\n      ...dados,\n      email_valido: false,\n      mensagem_erro: \"Por favor, informe seu e-mail para enviarmos as informações.\"\n    }\n  };\n}\n\n// Regex básica para validação de e-mail\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nconst emailValido = emailRegex.test(email);\n\nif (!emailValido) {\n  return {\n    json: {\n      ...dados,\n      email_valido: false,\n      mensagem_erro: \"O e-mail informado parece estar incorreto. Por favor, verifique e informe novamente.\"\n    }\n  };\n}\n\nreturn {\n  json: {\n    ...dados,\n    email_valido: true\n  }\n};"
+      },
+      "id": "validation-email",
+      "name": "Validation_Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 250]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.telefone_valido }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            },
+            {
+              "leftValue": "={{ $json.email_valido }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "check-validation",
+      "name": "If - Dados Válidos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1450, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.deseja_agendamento }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "check-booking",
+      "name": "If - Needs Booking or Budget",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1650, 200]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "COLE_AQUI_O_ID_DA_SUA_PLANILHA",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nome": "={{ $json.nome }}",
+            "Telefone": "={{ $json.telefone }}",
+            "Email": "={{ $json.email }}",
+            "Serviço": "={{ $json.servico }}",
+            "Localização": "={{ $json.localizacao }}",
+            "Deseja Agendamento": "={{ $json.deseja_agendamento ? 'Sim' : 'Não' }}",
+            "Urgência": "={{ $json.urgencia }}",
+            "Observações": "={{ $json.observacoes }}",
+            "Data/Hora": "={{ $json.timestamp }}",
+            "Session ID": "={{ $json.session_id }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "google-sheets-append",
+      "name": "Google Sheets - Adicionar Lead",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "list"
+        },
+        "start": "={{ $now.plus({days: 1}).set({hour: 9, minute: 0}).toISO() }}",
+        "end": "={{ $now.plus({days: 1}).set({hour: 10, minute: 0}).toISO() }}",
+        "summary": "Visita técnica - {{ $json.nome }}",
+        "description": "Cliente: {{ $json.nome }}\\nTelefone: {{ $json.telefone }}\\nE-mail: {{ $json.email }}\\nServiço: {{ $json.servico }}\\nLocalização: {{ $json.localizacao }}\\nObservações: {{ $json.observacoes }}",
+        "location": "={{ $json.localizacao }}",
+        "attendees": "={{ $json.email }}",
+        "options": {}
+      },
+      "id": "google-calendar-create",
+      "name": "Google Calendar - Criar Evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [1850, 100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/smtp/email",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "SUA_API_KEY_BREVO_AQUI"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  \"sender\": {\"email\": \"contato@npaconstrucoes.com.br\", \"name\": \"NPA Construções\"},\n  \"to\": [{\"email\": \"comercial@npaconstrucoes.com.br\", \"name\": \"Equipe Comercial\"}],\n  \"subject\": \"🏗️ Novo Lead - \" + $json.nome,\n  \"htmlContent\": \"<h2>Novo Lead Registrado</h2><p><strong>Cliente:</strong> \" + $json.nome + \"</p><p><strong>Telefone:</strong> \" + $json.telefone + \"</p><p><strong>E-mail:</strong> \" + $json.email + \"</p><p><strong>Serviço:</strong> \" + $json.servico + \"</p><p><strong>Localização:</strong> \" + $json.localizacao + \"</p><p><strong>Urgência:</strong> \" + $json.urgencia + \"</p><p><strong>Deseja Agendamento:</strong> \" + ($json.deseja_agendamento ? 'Sim' : 'Não') + \"</p><p><strong>Observações:</strong> \" + $json.observacoes + \"</p><hr><p><a href='https://docs.google.com/spreadsheets/d/COLE_AQUI_O_ID_DA_SUA_PLANILHA'>Ver Planilha de Leads</a></p>\"\n} }}",
+        "options": {}
+      },
+      "id": "send-email-notification",
+      "name": "HTTP Request - Notificar Equipe",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2050, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"status\": \"success\",\n  \"mensagem\": $json.deseja_agendamento \n    ? \"✅ Ótimo, \" + $json.nome + \"! Seus dados foram registrados e em breve entraremos em contato para confirmar o agendamento da visita técnica.\" \n    : \"✅ Obrigado, \" + $json.nome + \"! Recebemos seu interesse em \" + $json.servico + \". Nossa equipe entrará em contato em breve com um orçamento personalizado.\",\n  \"dados_registrados\": {\n    \"nome\": $json.nome,\n    \"telefone\": $json.telefone,\n    \"email\": $json.email,\n    \"servico\": $json.servico\n  }\n} }}",
+        "options": {}
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook - Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2250, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"status\": \"incomplete\",\n  \"mensagem\": $json.mensagem_erro || \"Olá! Para prosseguir, preciso de algumas informações. Pode me informar seu nome completo, telefone com DDD e e-mail?\",\n  \"campos_necessarios\": $json.campos_faltantes || []\n} }}",
+        "options": {}
+      },
+      "id": "respond-webhook-incomplete",
+      "name": "Respond to Webhook - Dados Incompletos",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1450, 400]
+    }
+  ],
+  "connections": {
+    "Webhook_Entrada": {
+      "main": [[{"node": "Normalizar_Entrada", "type": "main", "index": 0}]]
+    },
+    "Normalizar_Entrada": {
+      "main": [[{"node": "Gemini - Interpretar Mensagem (IA)", "type": "main", "index": 0}]]
+    },
+    "Gemini - Interpretar Mensagem (IA)": {
+      "main": [[{"node": "Parse_Resposta_IA", "type": "main", "index": 0}]]
+    },
+    "Parse_Resposta_IA": {
+      "main": [[{"node": "If - Campos Faltantes?", "type": "main", "index": 0}]]
+    },
+    "If - Campos Faltantes?": {
+      "main": [
+        [
+          {"node": "Validation_Telefone", "type": "main", "index": 0},
+          {"node": "Validation_Email", "type": "main", "index": 0}
+        ],
+        [{"node": "If - Needs Booking or Budget", "type": "main", "index": 0}]
+      ]
+    },
+    "Validation_Telefone": {
+      "main": [[{"node": "If - Dados Válidos?", "type": "main", "index": 0}]]
+    },
+    "Validation_Email": {
+      "main": [[{"node": "If - Dados Válidos?", "type": "main", "index": 0}]]
+    },
+    "If - Dados Válidos?": {
+      "main": [
+        [{"node": "If - Needs Booking or Budget", "type": "main", "index": 0}],
+        [{"node": "Respond to Webhook - Dados Incompletos", "type": "main", "index": 0}]
+      ]
+    },
+    "If - Needs Booking or Budget": {
+      "main": [
+        [{"node": "Google Calendar - Criar Evento", "type": "main", "index": 0}],
+        [{"node": "Google Sheets - Adicionar Lead", "type": "main", "index": 0}]
+      ]
+    },
+    "Google Calendar - Criar Evento": {
+      "main": [[{"node": "Google Sheets - Adicionar Lead", "type": "main", "index": 0}]]
+    },
+    "Google Sheets - Adicionar Lead": {
+      "main": [[{"node": "HTTP Request - Notificar Equipe", "type": "main", "index": 0}]]
+    },
+    "HTTP Request - Notificar Equipe": {
+      "main": [[{"node": "Respond to Webhook - Sucesso", "type": "main", "index": 0}]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-06T00:00:00.000Z",
+  "versionId": "1"
+}

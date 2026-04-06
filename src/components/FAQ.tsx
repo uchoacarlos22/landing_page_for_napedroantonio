@@ -209,27 +209,24 @@ const FAQAnswer = styled.div<{ open: boolean }>`
 
 const faqData = [
   {
-    question:
-      "Como descubro o status da minha solicitação de licença de construção?",
-    answer:
-      "Você pode acompanhar pelo portal da prefeitura ou entrando em contato com o setor responsável.",
+    question: "Quais tipos de reformas vocês atendem?",
+    answer: "Atendemos desde pequenas reformas residenciais e comerciais até construções do zero, incluindo elétrica, hidráulica, pintura e acabamentos de alto padrão.",
   },
   {
-    question:
-      'O que é um "empreiteiro especializado"? Eles precisam de uma licença de empreiteiro?',
-    answer:
-      "Empreiteiros especializados atuam em nichos específicos e devem ter licença conforme normas locais.",
+    question: "Como funciona a solicitação de orçamento?",
+    answer: "É simples e gratuito! Você clica no botão de WhatsApp, nos envia os detalhes do projeto e agendamos uma visita técnica para avaliar o local e fornecer um orçamento preciso.",
   },
   {
-    question: "Qual é o prazo de aprovação para uma licença de construção?",
-    answer:
-      "O prazo varia de 15 a 60 dias, dependendo da complexidade do projeto e documentação.",
+    question: "Vocês oferecem garantia nos serviços executados?",
+    answer: "Sim, todos os nossos serviços possuem garantia total de execução, seguindo rigorosamente as normas técnicas de segurança e qualidade.",
   },
   {
-    question:
-      "Em que horário é permitida a construção (ruído)? O trabalho pode ser feito nos fins de semana?",
-    answer:
-      "Segunda a sexta, 7h–18h; sábado até 17h. Domingos e feriados geralmente restritos.",
+    question: "Qual é o prazo médio para conclusão de uma obra?",
+    answer: "O prazo depende da complexidade do projeto. Após a visita técnica, entregamos um cronograma detalhado para que você saiba exatamente quando cada etapa será concluída.",
+  },
+  {
+    question: "Vocês trabalham com fornecimento de materiais?",
+    answer: "Podemos trabalhar de ambas as formas: apenas com a mão de obra especializada ou com o pacote completo (material + mão de obra), facilitando a gestão da sua obra.",
   },
 ];
 
@@ -266,11 +263,11 @@ export default function FAQ() {
 
             <StatsOverlay>
               <StatItem>
-                <StatNumber>1K+</StatNumber>
+                <StatNumber>250+</StatNumber>
                 <StatLabel>Projetos</StatLabel>
               </StatItem>
               <StatItem>
-                <StatNumber>950+</StatNumber>
+                <StatNumber>200+</StatNumber>
                 <StatLabel>Clientes</StatLabel>
               </StatItem>
               <StatItem>
@@ -279,6 +276,7 @@ export default function FAQ() {
               </StatItem>
             </StatsOverlay>
           </ImageContent>
+
         </Container>
       </FAQSection>
     </>

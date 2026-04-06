@@ -186,32 +186,30 @@ const Footer: React.FC = () => (
       <Column>
         <Heading>Informações de Contato</Heading>
         <ContactItem>
-          <strong>Endereço:</strong> 4239 Lapeer Rd, Port Huron, MI
+          <strong>Endereço:</strong> Morumbi, São Paulo - SP
         </ContactItem>
         <ContactItem>
-          <strong>Telefone:</strong> +56 (0) 12 345 6789
+          <strong>Telefone:</strong>{" "}
+          <a 
+            href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ color: 'inherit', textDecoration: 'none' }}
+          >
+            (Clique para falar no WhatsApp)
+          </a>
         </ContactItem>
+
         <ContactItem>
-          <strong>E-mail:</strong> business@support.com
+          <strong>E-mail:</strong> napedroantonio@gmail.com
         </ContactItem>
         <SocialIcons>
-          <a href="#">
-            <FaTwitter />
-          </a>
-          <a href="#">
-            <FaFacebookF />
-          </a>
-          <a href="#">
-            <FaGooglePlusG />
-          </a>
-          <a href="#">
-            <FaPinterestP />
-          </a>
-          <a href="#">
+          <a href="https://www.google.com/maps/search/?api=1&query=Construção+e+reforma+no+Morumbi+NapedroAntonio" target="_blank" rel="noopener noreferrer">
             <FaGlobe />
           </a>
         </SocialIcons>
       </Column>
+
     </FooterInner>
 
     <Divider />

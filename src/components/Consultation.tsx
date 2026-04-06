@@ -5,7 +5,6 @@ import { colors } from '../theme';
 const ConsultationSection = styled.section`
   position: relative;
   background: url('/src/assets/images/consultation_back.jpg') center/cover no-repeat;
-  background-attachment: fixed;
   padding: 24px 16px;
   color: #fff;
 `;
@@ -148,33 +147,67 @@ const ConsultationSelect = styled.select`
 `;
 
 const Consultation: React.FC = () => {
+  const [formData, setFormData] = React.useState({
+    nome: '',
+    telefone: '',
+    email: '',
+    assunto: '',
+    servico: '',
+    mensagem: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleWhatsApp = (e: React.FormEvent) => {
+    e.preventDefault();
+    const texto = `Olá! Meu nome é ${formData.nome}. Gostaria de solicitar uma consultoria sobre ${formData.servico || formData.assunto || 'serviços'}.\n\nDetalhes: ${formData.mensagem}`;
+    const uri = `https://wa.me/5511980743311?text=${encodeURIComponent(texto)}`;
+    window.open(uri, '_blank');
+  };
+
+
+  const handleEmail = () => {
+    const body = `Nome: ${formData.nome}\nTelefone: ${formData.telefone}\nServiço: ${formData.servico}\n\nMensagem: ${formData.mensagem}`;
+    const mailto = `mailto:napedroantonio@gmail.com?subject=${encodeURIComponent(formData.assunto || 'Consulta Landing Page')}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  };
+
   return (
-    <ConsultationSection>
+
+    <ConsultationSection id="consultation">
       <ConsultationOverlay />
       <ConsultationContainer>
         <ConsultationTitle>CONSULTORIA</ConsultationTitle>
         <ConsultationContent>
-          <ConsultationForm>
+          <ConsultationForm onSubmit={handleWhatsApp}>
             <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput type="text" placeholder="Nome Completo" />
-              <ConsultationInput type="text" placeholder="Telefone" />
+              <ConsultationInput name="nome" type="text" placeholder="Nome Completo" required onChange={handleChange} />
+              <ConsultationInput name="telefone" type="text" placeholder="Telefone" required onChange={handleChange} />
             </div>
             <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput type="email" placeholder="Email" />
-              <ConsultationInput type="text" placeholder="Assunto" />
+              <ConsultationInput name="email" type="email" placeholder="Email" required onChange={handleChange} />
+              <ConsultationInput name="assunto" type="text" placeholder="Assunto" onChange={handleChange} />
             </div>
-            <ConsultationSelect>
+            <ConsultationSelect name="servico" onChange={handleChange}>
               <option value="">Selecione o tipo de serviço</option>
               <option value="construcao">Construção</option>
               <option value="reforma">Reforma</option>
               <option value="consultoria">Consultoria</option>
               <option value="projeto">Projeto</option>
             </ConsultationSelect>
-            <ConsultationTextArea placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." />
-            <ConsultationButton type="submit">
-              🏗️ CONSULTORIA GRÁTIS
-            </ConsultationButton>
+            <ConsultationTextArea name="mensagem" placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." onChange={handleChange} />
+            <div style={{ display: 'flex', gap: '10px' }}>
+                <ConsultationButton type="submit" style={{ flex: 1 }}>
+                  💬 WHATSAPP
+                </ConsultationButton>
+                <ConsultationButton type="button" onClick={handleEmail} style={{ flex: 1, background: colors.primary, color: 'white' }}>
+                  📧 E-MAIL
+                </ConsultationButton>
+            </div>
           </ConsultationForm>
+
           <ConsultationHours>
             <ConsultationHoursTitle>HORÁRIO DE ATENDIMENTO</ConsultationHoursTitle>
             <ConsultationHoursParagraph>

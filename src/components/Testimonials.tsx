@@ -148,7 +148,7 @@ const NavigationDots = styled.div`
   margin-top: 30px;
 `;
 
-const Dot = styled.div<{ active?: boolean }>`
+const Dot = styled.div<{ $active?: boolean }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -161,7 +161,7 @@ const Dot = styled.div<{ active?: boolean }>`
   }
 
   ${props =>
-    props.active &&
+    props.$active &&
     css`
       background: ${colors.secondary};
       transform: scale(1.2);
@@ -207,7 +207,7 @@ const Testimonials = () => {
 
   return (
     <TestimonialsContainer className="testimonials-container">
-      <TestimonialsTitle>TESTIMONIALS</TestimonialsTitle>
+      <TestimonialsTitle>DEPOIMENTOS</TestimonialsTitle>
 
       <TestimonialsSlider>
         <TestimonialsTrack style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
@@ -295,7 +295,7 @@ const Testimonials = () => {
 
       <NavigationDots>
         {[...Array(totalSlides)].map((_, i) => (
-          <Dot key={i} active={currentSlide === i} onClick={() => goToSlide(i)} />
+          <Dot key={i} $active={currentSlide === i} onClick={() => goToSlide(i)} />
         ))}
       </NavigationDots>
     </TestimonialsContainer>

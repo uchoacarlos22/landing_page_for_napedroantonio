@@ -1,51 +1,80 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { colors } from "../theme";
+import { colors, breakpoints } from "../theme";
+import heroBg from "../assets/images/hero.png"; // ✅ Import da imagem
 
+// === Hero Section Container ===
 const StyledHeroSection = styled.section`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
-  height: 420px;
+  color: ${colors.background};
+  max-height: 62vh; /* Ajustado para ocupar menos espaço */
+  overflow: hidden;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    height: 400px; /* Ajustado */
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    height: 500px; /* Ajustado */
+  }
 `;
 
+// === Background Image Layer ===
 const StyledBackgroundImage = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url('src/assets/images/hero.png');
+  background-image: url(${heroBg});
   background-color: ${colors.primary};
-  background-blend-mode: screen;
-  opacity: 0.9;
+  opacity: 1;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
+
+  transition: filter 0.5s ease;
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      filter: brightness(1.35);
+    }
+  }
 `;
 
+// === Content Container ===
 const StyledContentContainer = styled.div`
   position: relative;
   z-index: 10;
-  text-align: left;
-  container mx-auto px-6;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 0 24px;
   margin-top: 100px;
+  max-width: 1200px;
+  text-align: left;
+
+  @media (max-width: ${breakpoints.mobileMax}) {
+    text-align: center;
+    margin-top: 60px;
+  }
 `;
 
+// === Title Styles ===
 const StyledTitle = styled.h1`
   font-size: 2.25rem;
-  @media (min-width: 768px) {
-    font-size: 3rem;
-  }
   font-weight: bold;
   margin-bottom: 1rem;
-  color: white;
+  color: ${colors.background};
   line-height: 1.2;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 3rem;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    font-size: 3.5rem;
+  }
 `;
 
 const StyledTitleLine1 = styled.span`
@@ -76,26 +105,29 @@ const StyledHighlightedText = styled.span`
   color: ${colors.secondary};
 `;
 
+// === Button Styles ===
 const StyledFreeConsultationButton = styled.a`
   background-color: ${colors.secondary};
   color: ${colors.primary};
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 0.375rem;
-  &:hover {
-    background-color: ${colors.secondary};
-    transform: scale(1.05);
-  }
-  &:active {
-    transform: scale(0.95);
-  }
-  transition: transform 0.2s;
   display: inline-flex;
   align-items: center;
   margin-top: 1rem;
   text-decoration: none;
+  font-weight: 600;
+
   transform: translateY(100px);
   opacity: 0;
   transition: all 1s ease-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 
   &.active {
     transform: translateY(0);
@@ -130,47 +162,48 @@ const Hero: React.FC = () => {
           }
         });
       },
-      {
-        threshold: 0.5,
-      }
+      { threshold: 0.5 }
     );
 
-    if (titleRef1.current) {
-      observer.observe(titleRef1.current);
-    }
-    if (titleRef2.current) {
-      observer.observe(titleRef2.current);
-    }
-    if (buttonRef.current) {
-      observer.observe(buttonRef.current);
-    }
+    if (titleRef1.current) observer.observe(titleRef1.current);
+    if (titleRef2.current) observer.observe(titleRef2.current);
+    if (buttonRef.current) observer.observe(buttonRef.current);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <StyledHeroSection id="hero">
-      <StyledBackgroundImage />
+      <StyledBackgroundImage
+        role="img"
+        aria-label="Imagem de fundo representando construção de casas"
+      />
       <StyledContentContainer>
         <StyledTitle>
-          <StyledTitleLine1 ref={titleRef1}>CONSTRUÍMOS SEUS</StyledTitleLine1>
+          <StyledTitleLine1 ref={titleRef1}>
+            CONSTRUÍMOS SEUS
+          </StyledTitleLine1>
           <StyledTitleLine2 ref={titleRef2}>
             <StyledHighlightedText>SONHOS E SEU LAR</StyledHighlightedText>
           </StyledTitleLine2>
         </StyledTitle>
-        <StyledFreeConsultationButton ref={buttonRef} href="https://wa.me/SEUNUMERO">
+        <StyledFreeConsultationButton
+          ref={buttonRef}
+          href="https://wa.me/SEUNUMERO"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir conversa no WhatsApp para consulta gratuita"
+        >
           <StyledWhatsAppIcon
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path d="M20 16V6H4v10l4 4 4-4 4 4 4-4z"></path>
             <polyline points="4 10 10 14 20 6"></polyline>
           </StyledWhatsAppIcon>
           CONSULTA GRATUITA
         </StyledFreeConsultationButton>
-        {/* <Features /> */}
       </StyledContentContainer>
     </StyledHeroSection>
   );

@@ -1,389 +1,397 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
 import { colors } from "../theme";
 
-// ==== Styled Components ====
+// ====== Imagens ======
+import banheiroAntes from "../assets/images/carousel-images/banheiro-antes.png";
+import banheiroDepois from "../assets/images/carousel-images/banheiro-depois.png";
+import casaAntes from "../assets/images/carousel-images/casa-antes.png";
+import casaDepois from "../assets/images/carousel-images/casa-depois.png";
+import cozinhaAntes from "../assets/images/carousel-images/cozinha-antes.png";
+import cozinhaDepois from "../assets/images/carousel-images/cozinha-depois.png";
+import quintalAntes from "../assets/images/carousel-images/quintal-antes.png";
+import quintalDepois from "../assets/images/carousel-images/quintal-depois.png";
+import salaAntes from "../assets/images/carousel-images/sala-antes.png";
+import salaDepois from "../assets/images/carousel-images/sala-depois.png";
 
-const pulse = keyframes`
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
-  `;
+// Exemplo de logo
+import logo from "../assets/images/npa_logo_sf.png";
 
-const Container = styled.div`
-  width: 95%;
-  padding-top: 20px;
+interface SlideData {
+  beforeSrc: string;
+  afterSrc: string;
+  title: string;
+  description: string;
+  status: string;
+}
+
+const slidesData: SlideData[] = [
+  {
+    beforeSrc: casaAntes,
+    afterSrc: casaDepois,
+    title: "Reforma de Fachada",
+    description:
+      "Modernização completa da fachada, trazendo um novo visual para o imóvel.",
+    status: "Concluído",
+  },
+  {
+    beforeSrc: banheiroAntes,
+    afterSrc: banheiroDepois,
+    title: "Banheiro Moderno",
+    description: "Reforma com porcelanato e box de vidro temperado.",
+    status: "Concluído",
+  },
+  {
+    beforeSrc: cozinhaAntes,
+    afterSrc: cozinhaDepois,
+    title: "Cozinha Planejada",
+    description:
+      "Design moderno com bancadas em mármore e eletrodomésticos integrados.",
+    status: "Em Progresso",
+  },
+  {
+    beforeSrc: quintalAntes,
+    afterSrc: quintalDepois,
+    title: "Reforma do Quintal",
+    description: "Paisagismo e criação de área de lazer.",
+    status: "Planejamento",
+  },
+  {
+    beforeSrc: salaAntes,
+    afterSrc: salaDepois,
+    title: "Renovação da Sala",
+    description:
+      "Transformação completa do ambiente com nova decoração e móveis modernos.",
+    status: "Concluído",
+  },
+];
+
+// ====== Styled Components ======
+const Container = styled.div.attrs(() => ({ id: 'projects' }))`
+  width: auto;
 `;
 
-const Wrapper = styled.div`
+const CarouselWrapper = styled.div`
   position: relative;
+  width: 100%;
+  min-height: 460px;
   overflow: hidden;
-  border-radius: 15px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-`;
-
-const Track = styled.div`
-  display: flex;
-`;
-
-const Slide = styled.div`
-  min-width: 100%;
-  position: relative;
-  height: 350px;
-  overflow: hidden;
-
-  &:hover img.after {
-    opacity: 1;
-  }
-  &:hover img.before {
-    opacity: 0;
-  }
-  &:hover div.overlay {
-    transform: translateY(0);
-  }
-  &:hover div.status {
-    background: ${colors.secondary};
-    transform: scale(1.05);
-  }
+  border-radius: 5px;
+  background: white;
+  border: 4px solid ${colors.primary};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Garante que o carrossel esteja acima de outros elementos */
 
   @media (max-width: 768px) {
-    height: 300px;
+    min-height: 500px; /* Aumenta a altura mínima para acomodar os bullets */
   }
 `;
 
-const ImageContainer = styled.div`
-position: relative;
-width: 100%;
-height: 100%;
+const SlideWrapper = styled.div<{ active: boolean }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: ${(props) => (props.active ? 1 : 0)};
+  transition: opacity 0.3s ease-in-out;
+  z-index: ${(props) => (props.active ? 1 : 0)};
 `;
 
-const ImgBefore = styled.img.attrs({ className: "before" })`
-position: absolute;
-top: 0;
-left: 0;
+const BeforeAfterContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+  overflow: hidden;
+`;
+
+const ImageBefore = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 1;
 `;
 
-const ImgAfter = styled.img.attrs({ className: "after" })`
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-object-fit: cover;
-transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-opacity: 0;
+const ImageAfter = styled.img<{ sliderPos: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${(props) => props.sliderPos}%;
+  height: 100%;
+  object-fit: cover;
+  transition: width 0.8s ease-in-out;
 `;
 
-const StatusIndicator = styled.div.attrs({ className: "status" })`
-position: absolute;
-top: 20px;
-right: 20px;
+const SliderLine = styled.div<{ sliderPos: number }>`
+  position: absolute;
+  top: 0;
+  left: ${(props) => props.sliderPos}%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
   background: ${colors.primary};
-  border-radius: 25px;
-  padding: 8px 16px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: white;
-  transition: all 0.3s ease;
-  `;
-  
-  const ImageOverlay = styled.div.attrs({ className: "overlay" })`
+  cursor: ew-resize;
+  transition: left 0.8s ease-in-out;
+`;
+
+const SlideOverlay = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  background: rgba(0, 0, 0, 0.5); // semi-transparente
   color: white;
-  padding: 30px;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
+  backdrop-filter: blur(5px); // desfoca o que está atrás
 
   @media (max-width: 768px) {
-    padding: 20px;
+    padding-bottom: 50px; /* Aumenta o padding para acomodar os bullets */
   }
 `;
 
-const OverlayTitle = styled.div`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-`;
-
-const OverlayDescription = styled.div`
-  font-size: 0.95rem;
-  opacity: 0.9;
-  line-height: 1.4;
-`;
-
-const Controls = styled.div`
+const TitleWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
 `;
 
-const Button = styled.button`
-  background: ${colors.primary};
-  border: none;
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
+const Title = styled.h3`
+  margin: 0;
   font-size: 1.2rem;
+`;
+
+const StatusIndicator = styled.div`
+  background: ${colors.secondary};
+  color: white;
+  padding: 6px 12px;
+  border-radius: 25px;
+  font-size: 0.8rem;
+`;
+
+const Description = styled.p`
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+`;
+
+// ====== Overlay "Tapume" ======
+const TransitionOverlay = styled.div<{ active: boolean }>`
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/src/assets/images/fundo-tapume.jpg") center center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transform: ${(props) => props.active ? "translateX(0%)" : "translateX(-100%)"};
+  transition: transform 0.6s ease-in-out;
+  z-index: 30; // aumentar acima dos controles
+`;
 
-  &:hover {
-    background: ${colors.secondary};
-    transform: scale(1.1);
+const OverlayLogo = styled.img`
+  width: 320px;
+  height: auto;
+  opacity: 0.9;
+`;
+
+// ====== Controles ======
+const CarouselIndicators = styled.div`
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    bottom: 10px; /* Posiciona abaixo do texto */
+    left: 50%;
+    right: auto; /* Remove o right fixo */
+    transform: translateX(-50%);
+    width: 100%;
+    justify-content: center;
   }
 `;
 
-const Indicators = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-interface IndicatorProps {
-  $active: boolean;
-}
-
-const Indicator = styled.div<IndicatorProps>`
+const Indicator = styled.div<{ active: boolean }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: ${(props) => (props.$active ? colors.secondary : colors.border)};
+  background: ${(props) => (props.active ? colors.secondary : "#ccc")};
   cursor: pointer;
-  transition: all 0.3s ease;
-  transform: ${(props) => (props.$active ? "scale(1.2)" : "scale(1)")};
+`;
 
-  &:focus {
-    outline: 2px solid white;
+const ControlsContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: none; /* Remove o background em mobile */
+    padding: 0;
+    align-items: center; /* Centraliza os itens */
   }
 `;
 
-const HoverInstruction = styled.p`
-  text-align: center;
-  color: ${colors.textSecondary};
-  font-size: 0.9rem;
-  margin-top: 15px;
-  font-style: italic;
-  animation: ${pulse} 2s infinite;
+const ControlsWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  z-index: 20;
+
+  @media (max-width: 768px) {
+    display: none; /* Oculta os botões em telas menores */
+  }
 `;
 
-// ==== Data ====
+const ControlButton = styled.button`
+  background: ${colors.secondary};
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  &:hover {
+    background: ${colors.primary};
+  }
+`;
 
-const slidesData = [
-  {
-    beforeSrc: "https://picsum.photos/id/1015/800/500",
-    afterSrc: "https://picsum.photos/id/1016/800/500",
-    status: "ANTES/DEPOIS",
-    title: "Projeto de Exemplo",
-    description: "Descrição da transformação realizada.",
-  },
-  {
-    beforeSrc: "https://picsum.photos/id/1015/800/500",
-    afterSrc: "https://picsum.photos/id/1018/800/500",
-    status: "CONCLUÍDO",
-    title: "Reforma Cozinha",
-    description:
-      "Transformação total da cozinha com móveis planejados e bancada moderna.",
-  },
-  {
-    beforeSrc: "https://picsum.photos/id/1016/800/500",
-    afterSrc: "https://picsum.photos/id/1020/800/500",
-    status: "CONCLUÍDO",
-    title: "Banheiro Moderno",
-    description: "Reforma com porcelanato e box de vidro temperado.",
-  },
-  {
-    beforeSrc: "https://picsum.photos/id/1019/800/500",
-    afterSrc: "https://picsum.photos/id/1024/800/500",
-    status: "CONCLUÍDO",
-    title: "Sala de Estar",
-    description: "Ambiente integrado com projeto de iluminação personalizado.",
-  },
-  {
-    beforeSrc: "https://picsum.photos/id/1021/800/500",
-    afterSrc: "https://picsum.photos/id/1027/800/500",
-    status: "CONCLUÍDO",
-    title: "Suíte Master",
-    description:
-      "Criação de suíte com closet integrado e varanda com vista panorâmica.",
-  },
-  {
-    beforeSrc: "https://picsum.photos/id/1022/800/500",
-    afterSrc: "https://picsum.photos/id/1031/800/500",
-    status: "CONCLUÍDO",
-    title: "Área de Lazer",
-    description:
-      "Espaço gourmet com churrasqueira, piscina e paisagismo completo.",
-  },
-];
+// ====== Component ======
+export default function Projects() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderPos, setSliderPos] = useState(0);
+  const [overlayActive, setOverlayActive] = useState(false);
+  const isDragging = useRef(false);
 
-// ==== React Component ====
+  const changeSlide = (newIndex: number) => {
+    setOverlayActive(true);
+    setTimeout(() => {
+      setCurrentSlide(newIndex);
+      setSliderPos(0);
+    }, 300); // cobre o slide rapidamente
+    setTimeout(() => {
+      setOverlayActive(false); // agora espera 1s a mais antes de sumir
+    }, 1700);
+  };
 
-export default function CarouselAntesDepois() {
-  const [currentSlide, setCurrentSlide] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const autoplayRef = useRef<number | null>(null);
+  const nextSlide = () => changeSlide((currentSlide + 1) % slidesData.length);
+  const prevSlide = () =>
+    changeSlide(currentSlide === 0 ? slidesData.length - 1 : currentSlide - 1);
+  const goToSlide = (index: number) => changeSlide(index);
 
-  // Clones: first and last
-  const totalSlides = slidesData.length;
+  // ====== Drag ======
+  const handleMouseDown = () => {
+    isDragging.current = true;
+  };
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    let newPos = ((e.clientX - rect.left) / rect.width) * 100;
+    newPos = Math.max(0, Math.min(100, newPos));
+    setSliderPos(newPos);
+  };
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    let newPos = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
+    newPos = Math.max(0, Math.min(100, newPos));
+    setSliderPos(newPos);
+  };
 
-  // Slides with clones
-  const slidesWithClones = [
-    slidesData[totalSlides - 1], // last clone at the start
-    ...slidesData,
-    slidesData[0], // first clone at the end
-  ];
-
-  const updatePosition = useCallback((index: number, animate = true) => {
-    if (!trackRef.current) return;
-    trackRef.current.style.transition = animate
-      ? "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
-      : "none";
-    trackRef.current.style.transform = `translateX(${-index * 100}%)`;
-  }, []);
-
+  // ====== Auto Slide Animation ======
   useEffect(() => {
-    updatePosition(currentSlide);
-  }, [currentSlide, updatePosition]);
-
-  // Handle transition end to reset instantly when on clones
-  function handleTransitionEnd() {
-    setIsTransitioning(false);
-    if (currentSlide === 0) {
-      setCurrentSlide(totalSlides);
-      updatePosition(totalSlides, false);
-    } else if (currentSlide === totalSlides + 1) {
-      setCurrentSlide(1);
-      updatePosition(1, false);
-    }
-  }
-
-  // Next slide
-  function nextSlide() {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => prev + 1);
-  }
-
-  // Previous slide
-  function prevSlide() {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => prev - 1);
-  }
-
-  // Go to specific slide
-  function goToSlide(index: number) {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide(index);
-  }
-
-  // Autoplay
-  useEffect(() => {
-    function startAutoplay() {
-      if (autoplayRef.current !== null) clearInterval(autoplayRef.current);
-      autoplayRef.current = window.setInterval(() => {
-        nextSlide();
-      }, 4000);
-    }
-    startAutoplay();
+    const timer1 = setTimeout(() => setSliderPos(50), 4000); // vai para o meio após 4s
+    const timer2 = setTimeout(() => setSliderPos(100), 6000); // vai para 100% após +2s no meio
+    const timer3 = setTimeout(() => nextSlide(), 8000); // próximo slide após +2s final
     return () => {
-      if (autoplayRef.current !== null) clearInterval(autoplayRef.current);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
     };
-  }, [isTransitioning]);
+  }, [currentSlide]);
 
-  // Pause autoplay on hover
-  function handleMouseEnter() {
-    if (autoplayRef.current !== null) clearInterval(autoplayRef.current);
-  }
-  function handleMouseLeave() {
-    autoplayRef.current = window.setInterval(() => {
-      nextSlide();
-    }, 4000);
-  }
+  const displayStatus = sliderPos === 100 ? "Concluído" : "Antes";
 
   return (
     <Container>
-      <Wrapper onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <Track
-          ref={trackRef}
-          onTransitionEnd={handleTransitionEnd}
-          role="list"
-          aria-live="polite"
-        >
-          {slidesWithClones.map((slide, index) => (
-            <Slide
-              key={index}
-              role="listitem"
-              aria-label={`${slide.title}, status: ${slide.status}`}
+      <CarouselWrapper
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchMove}
+      >
+        {slidesData.map((slide, index) => (
+          <SlideWrapper key={index} active={index === currentSlide}>
+            <BeforeAfterContainer
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleMouseDown}
             >
-              <ImageContainer>
-                <ImgBefore
-                  src={slide.beforeSrc}
-                  alt={`Antes - ${slide.title}`}
-                />
-                <ImgAfter
-                  src={slide.afterSrc}
-                  alt={`Depois - ${slide.title}`}
-                />
-                <StatusIndicator>{slide.status}</StatusIndicator>
-                <ImageOverlay>
-                  <OverlayTitle>{slide.title}</OverlayTitle>
-                  <OverlayDescription>{slide.description}</OverlayDescription>
-                </ImageOverlay>
-              </ImageContainer>
-            </Slide>
-          ))}
-        </Track>
-      </Wrapper>
-
-      <Controls>
-        <Button aria-label="Slide anterior" onClick={prevSlide}>
-          ‹
-        </Button>
-        <Button aria-label="Próximo slide" onClick={nextSlide}>
-          ›
-        </Button>
-      </Controls>
-
-      <Indicators role="tablist" aria-label="Indicadores do carrossel">
-        {slidesData.map((_, idx) => (
-          <Indicator
-            key={idx}
-            $active={currentSlide === idx + 1}
-            onClick={() => goToSlide(idx + 1)}
-            tabIndex={0}
-            role="tab"
-            aria-selected={currentSlide === idx + 1}
-            aria-label={`Ir para slide ${idx + 1}`}
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-              if (e.key === "Enter" || e.key === " ") {
-                goToSlide(idx + 1);
-              }
-            }}
-          />
+              <ImageBefore
+                src={slide.beforeSrc}
+                alt={`Antes - ${slide.title}`}
+              />
+              <ImageAfter
+                src={slide.afterSrc}
+                alt={`Depois - ${slide.title}`}
+                sliderPos={sliderPos}
+              />
+              <SliderLine sliderPos={sliderPos} />
+              <SlideOverlay>
+                <TitleWrapper>
+                  <Title>{slide.title}</Title>
+                  <StatusIndicator>{displayStatus}</StatusIndicator>
+                </TitleWrapper>
+                <Description>{slide.description}</Description>
+              </SlideOverlay>
+            </BeforeAfterContainer>
+          </SlideWrapper>
         ))}
-      </Indicators>
 
-      <HoverInstruction>
-        Passe o mouse sobre as imagens para ver a transformação
-      </HoverInstruction>
+        {/* Overlay tapume com logo */}
+        <TransitionOverlay active={overlayActive}>
+          <OverlayLogo src={logo} alt="Logo-3d" />
+        </TransitionOverlay>
+        <ControlsContainer>
+          <CarouselIndicators>
+            {slidesData.map((_, idx) => (
+              <Indicator
+                key={idx}
+                active={idx === currentSlide}
+                onClick={() => goToSlide(idx)}
+              />
+            ))}
+          </CarouselIndicators>
+          <ControlsWrapper>
+            <ControlButton onClick={prevSlide}>‹</ControlButton>
+            <ControlButton onClick={nextSlide}>›</ControlButton>
+          </ControlsWrapper>
+        </ControlsContainer>
+      </CarouselWrapper>
     </Container>
   );
 }

@@ -11,7 +11,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { breakpoints, colors } from "../theme"; // ajuste o caminho conforme sua estrutura
+import { breakpoints, colors } from "../theme";
+import logo from "../assets/images/npa_logo_sf.png"; // ✅ Importando logo
 
 // === keyframe para slide in da esquerda ===
 const slideIn = keyframes`
@@ -47,12 +48,7 @@ const TopBar = styled.div`
   top: -5px;
   z-index: 100;
 
-  /* tablet */
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    display: none;
-  }
-  /* mobile */
-  @media (max-width: ${breakpoints.mobileMax}) {
+  @media (max-width: ${breakpoints.tabletMax}) {
     display: none;
   }
 `;
@@ -88,12 +84,15 @@ const SocialIcons = styled.div`
 const SocialLink = styled.a`
   color: ${colors.background};
   margin-left: 10px;
-  &:hover {
+
+  &:hover,
+  &:focus {
     color: ${colors.secondary};
+    outline: none;
   }
 `;
 
-const NavigationBar = styled.div<{ isScrolled: boolean }>`
+const NavigationBar = styled.nav<{ $isScrolled: boolean }>`
   width: 90%;
   background-color: ${colors.background};
   align-self: center;
@@ -103,19 +102,13 @@ const NavigationBar = styled.div<{ isScrolled: boolean }>`
   z-index: 100;
   max-height: 60px;
 
-  /* tablet */
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
-    width: 100%;
-    top: 0;
-  }
-  /* mobile */
-  @media (max-width: ${breakpoints.mobileMax}) {
+  @media (max-width: ${breakpoints.tabletMax}) {
     width: 100%;
     top: 0;
   }
 
   ${(p) =>
-    p.isScrolled &&
+    p.$isScrolled &&
     `
     width: 100%;
     top: 0;
@@ -140,97 +133,77 @@ const Logo = styled(Link)`
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
+
   img {
     width: 100px;
-    height: 90px;
+    height: auto; /* ✅ mantém proporção */
     margin-left: 10px;
     padding-top: 5px;
   }
 `;
 
-const MenuIcon = styled.div`
+const MenuIcon = styled.button`
   color: ${colors.primary};
   cursor: pointer;
   display: none;
+  background: transparent;
+  border: none;
 
-  /* tablet */
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
+  @media (max-width: ${breakpoints.tabletMax}) {
     display: block;
   }
-  /* mobile */
-  @media (max-width: ${breakpoints.mobileMax}) {
-    display: block;
+
+  &:focus {
+    outline: 2px solid ${colors.secondary};
+    border-radius: 4px;
   }
 `;
 
-const NavLinks = styled.nav<{ isMenuOpen: boolean }>`
+const NavLinks = styled.div<{ $isMenuOpen: boolean }>`
   display: flex;
   width: 80%;
   justify-content: space-between;
   padding: 0 20px;
   align-items: center;
 
-  /* tablet */
-  @media (min-width: ${breakpoints.tabletMin}) and (max-width: ${breakpoints.tabletMax}) {
+  @media (max-width: ${breakpoints.tabletMax}) {
     flex-direction: column;
     position: absolute;
     top: 60px;
     left: 0;
-    width: 250px;
+    width: 260px;
     background-color: ${colors.primary};
-    border: 4px solid ${colors.secondary};
-    border-radius: 0 0px 10px 0;
-    padding: 20px;
-    align-items: flex-start;
-    z-index: 10;
-    display: ${(p) => (p.isMenuOpen ? "flex" : "none")};
-  }
-  /* mobile */
-  @media (max-width: ${breakpoints.mobileMax}) {
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 300px;
     border: 3px solid ${colors.secondary};
     border-radius: 0 0px 10px 0;
-    background-color: ${colors.primary};
     padding: 20px;
     align-items: flex-start;
     z-index: 10;
-    display: ${(p) => (p.isMenuOpen ? "flex" : "none")};
+    display: ${(p) => (p.$isMenuOpen ? "flex" : "none")};
   }
 `;
 
 const NavLink = styled(Link)<{ delay: number }>`
   font-size: 16px;
   text-transform: uppercase;
-  text-decoration: none;
   font-weight: 700;
   color: ${colors.secondary};
   cursor: pointer;
-  opacity: 0.8;
-  transform: scale(1);
+  opacity: 0.9;
   transition: all 0.3s ease;
 
-  &:hover {
+  &:hover,
+  &:focus {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.05);
     color: ${colors.primary};
+    outline: none;
   }
 
-  /* tablet e mobile: cascata de entrada */
-  @media (max-width: ${breakpoints.mobileMax}),
-    (min-width: ${breakpoints.tabletMin}) and (max-width: ${
-  breakpoints.tabletMax
-}) {
+  @media (max-width: ${breakpoints.tabletMax}) {
     margin: 10px 0;
     opacity: 0;
     animation: ${slideIn} 0.4s forwards;
     animation-delay: ${(p) => p.delay}s;
-
-     &:hover {
-     color: ${colors.secondary};
   }
 `;
 
@@ -238,7 +211,7 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuIconRef = useRef<HTMLDivElement>(null);
+  const menuIconRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -269,9 +242,9 @@ const Header: React.FC = () => {
     { name: "Sobre", id: "about" },
     { name: "Serviços", id: "services" },
     { name: "Projetos", id: "projects" },
+    { name: "Consultoria", id: "consultation" },
     { name: "FAQ", id: "faq" },
     { name: "Depoimentos", id: "testimonials" },
-    { name: "Contato", id: "contact" },
   ];
 
   return (
@@ -280,44 +253,54 @@ const Header: React.FC = () => {
         <TopBarContent>
           <ContactInfo>
             <Address>
-              <MapPin size={16} style={{ marginRight: "5px" }} />
-              2900 Lapeer Rd, Port Huron, MI 48060
+              <MapPin size={16} style={{ marginRight: "5px" }} aria-hidden="true" />
+              Morumbi, São Paulo - SP
             </Address>
             <PhoneNumber>
-              <Phone size={16} style={{ marginRight: "5px" }} />
-              +1 (800) 478-4251
+              <Phone size={16} style={{ marginRight: "5px" }} aria-hidden="true" />
+              <a 
+                href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                (Clique para falar no WhatsApp)
+              </a>
             </PhoneNumber>
+
           </ContactInfo>
-          <SocialIcons>
-            <SocialLink href="#">
+          {/* <SocialIcons>
+            <SocialLink href="#" aria-label="Facebook">
               <Facebook size={16} />
             </SocialLink>
-            <SocialLink href="#">
+            <SocialLink href="#" aria-label="Twitter">
               <Twitter size={16} />
             </SocialLink>
-            <SocialLink href="#">
+            <SocialLink href="#" aria-label="Instagram">
               <Instagram size={16} />
             </SocialLink>
-            <SocialLink href="#">
+            <SocialLink href="#" aria-label="YouTube">
               <Youtube size={16} />
             </SocialLink>
-          </SocialIcons>
+          </SocialIcons> */}
+
         </TopBarContent>
       </TopBar>
 
-      <NavigationBar isScrolled={isScrolled}>
+      <NavigationBar $isScrolled={isScrolled}>
         <NavigationContent>
-          <Logo to="hero" smooth duration={500}>
-            <img src="src/assets/images/npa_logo_sf.png" alt="NAPEDROANTONIO" />
+          <Logo to="hero" smooth duration={500} offset={-60} aria-label="Ir para seção inicial">
+            <img src={logo} alt="Logo da empresa NAPEDROANTONIO" />
           </Logo>
 
-          <NavLinks ref={menuRef} isMenuOpen={isMenuOpen}>
+          <NavLinks ref={menuRef} $isMenuOpen={isMenuOpen}>
             {sections.map((sec, i) => (
               <NavLink
                 key={sec.id}
                 to={sec.id}
                 smooth
                 duration={500}
+                offset={-60}
                 onClick={() => setIsMenuOpen(false)}
                 delay={i * 0.1}
               >
@@ -329,6 +312,8 @@ const Header: React.FC = () => {
           <MenuIcon
             ref={menuIconRef}
             onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label="Abrir ou fechar menu de navegação"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
           </MenuIcon>
