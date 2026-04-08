@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import { breakpoints, colors } from "../theme";
+import whyUsImg from "../assets/images/why_us.jpg";
+
 
 // ============ STYLED COMPONENTS ============
 
@@ -257,9 +259,10 @@ export default function FAQ() {
           </FAQList>
           <ImageContent>
             <MainImage
-              src="src/assets/images/why_us.jpg"
+              src={whyUsImg}
               alt="Trabalhador da Construção"
             />
+
 
             <StatsOverlay>
               <StatItem>

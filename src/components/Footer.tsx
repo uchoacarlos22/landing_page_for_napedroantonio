@@ -10,12 +10,14 @@ import {
   FaGlobe,
 } from "react-icons/fa";
 import TratorIcon from "../assets/images/trator-icon.svg";
+import footerImg from "../assets/images/footer.jpg";
 
 const FooterContainer = styled.footer`
   position: relative;
   background: linear-gradient(${colors.primary}B3, ${colors.primary}CC),
-    /* overlay mais claro */ url("src/assets/images/footer.jpg") center/cover
+    /* overlay mais claro */ url(${footerImg}) center/cover
       no-repeat;
+
   color: ${colors.background}E6;
   padding: 80px 20px 30px;
   font-size: 0.9rem;

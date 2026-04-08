@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../theme';
+import consultationBack from '../assets/images/consultation_back.jpg';
+
 
 const ConsultationSection = styled.section`
   position: relative;
-  background: url('/src/assets/images/consultation_back.jpg') center/cover no-repeat;
+  background: url(${consultationBack}) center/cover no-repeat;
+
   padding: 24px 16px;
   color: #fff;
 `;
