@@ -3,13 +3,19 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../theme";
 import aboutImage from "../assets/images/about_image.png";
 
+const SectionWrapper = styled.div`
+  background: ${colors.primary};
+  padding: 60px 20px;
+`;
+
+
 const WelcomeContainer = styled.section.attrs(() => ({ id: "about" }))`
   width: 75%;
   margin: 60px auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: ${colors.background};
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: ${colors.primary};
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   overflow: hidden;
 
@@ -25,7 +31,7 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: ${colors.background};
+  background-color: white;
 
   @media (max-width: ${breakpoints.mobileMax}) {
     padding: 30px 20px;
@@ -113,7 +119,8 @@ const SignatureTitle = styled.div`
 
 const AboutUs: React.FC = () => {
   return (
-    <WelcomeContainer>
+    <SectionWrapper>
+      <WelcomeContainer>
       <LeftSection>
         <WelcomeTitle>
           <span>Bem vindo ao </span>
@@ -146,8 +153,10 @@ const AboutUs: React.FC = () => {
           <SignatureTitle as="p">Mestre de Obras e Fundador</SignatureTitle>
         </SignatureSection>
       </RightSection>
-    </WelcomeContainer>
+      </WelcomeContainer>
+    </SectionWrapper>
   );
 };
+
 
 export default AboutUs;
