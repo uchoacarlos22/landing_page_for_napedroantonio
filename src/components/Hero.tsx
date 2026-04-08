@@ -189,7 +189,7 @@ const Hero: React.FC = () => {
         </StyledTitle>
         <StyledFreeConsultationButton
           ref={buttonRef}
-          href="https://wa.me/SEUNUMERO"
+          href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20solicitar%20uma%20consulta%20gratuita."
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Abrir conversa no WhatsApp para consulta gratuita"

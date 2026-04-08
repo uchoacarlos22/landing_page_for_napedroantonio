@@ -2,13 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { colors } from "../theme";
-import {
-  FaTwitter,
-  FaFacebookF,
-  FaGooglePlusG,
-  FaPinterestP,
-  FaGlobe,
-} from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
 import TratorIcon from "../assets/images/trator-icon.svg";
 import footerImg from "../assets/images/footer.jpg";
 
@@ -217,10 +211,9 @@ const Footer: React.FC = () => (
     <Divider />
 
     <FooterBottom>
-      © {new Date().getFullYear()} Company Name. All Rights Reserved.
+      © {new Date().getFullYear()} NPA — Construção e Reformas. Todos os direitos reservados.
       <br />
-      <a href="#history">Histórico</a> | <a href="#faq">FAQ</a> |{" "}
-      <a href="#events">Eventos</a>
+      <a href="#faq">FAQ</a> | <a href="#contact">Contato</a> | <a href="#services">Serviços</a>
     </FooterBottom>
   </FooterContainer>
 );
