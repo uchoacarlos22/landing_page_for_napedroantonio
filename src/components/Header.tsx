@@ -138,7 +138,7 @@ const Logo = styled(Link)`
     width: 100px;
     height: auto; /* ✅ mantém proporção */
     margin-left: 10px;
-    padding-top: 5px;
+    padding-top: 20px;
   }
 `;
 
@@ -182,7 +182,7 @@ const NavLinks = styled.div<{ $isMenuOpen: boolean }>`
   }
 `;
 
-const NavLink = styled(Link)<{ delay: number }>`
+const NavLink = styled.a<{ delay: number }>`
   font-size: 16px;
   text-transform: uppercase;
   font-weight: 700;
@@ -190,6 +190,7 @@ const NavLink = styled(Link)<{ delay: number }>`
   cursor: pointer;
   opacity: 0.9;
   transition: all 0.3s ease;
+  text-decoration: none;
 
   &:hover,
   &:focus {
@@ -206,6 +207,7 @@ const NavLink = styled(Link)<{ delay: number }>`
     animation-delay: ${(p) => p.delay}s;
   }
 `;
+
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -289,18 +291,16 @@ const Header: React.FC = () => {
 
       <NavigationBar $isScrolled={isScrolled}>
         <NavigationContent>
-          <Logo to="hero" smooth duration={500} offset={-60} aria-label="Ir para seção inicial">
+          <Logo href="#hero" aria-label="Ir para seção inicial">
             <img src={logo} alt="Logo da empresa NAPEDROANTONIO" />
           </Logo>
+
 
           <NavLinks ref={menuRef} $isMenuOpen={isMenuOpen}>
             {sections.map((sec, i) => (
               <NavLink
                 key={sec.id}
-                to={sec.id}
-                smooth
-                duration={500}
-                offset={-60}
+                href={`#${sec.id}`}
                 onClick={() => setIsMenuOpen(false)}
                 delay={i * 0.1}
               >
@@ -308,6 +308,7 @@ const Header: React.FC = () => {
               </NavLink>
             ))}
           </NavLinks>
+
 
           <MenuIcon
             ref={menuIconRef}

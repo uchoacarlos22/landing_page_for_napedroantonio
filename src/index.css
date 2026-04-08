@@ -6,10 +6,16 @@
 
 
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
 * {
   margin: 0;
   padding: 0;
 }
+
 
 .faq-image {
   width: 40%;

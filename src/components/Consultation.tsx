@@ -70,7 +70,7 @@ const ConsultationInput = styled.input`
 `;
 
 const ConsultationTextArea = styled.textarea`
-  width: 95%;
+  width: 100%;
   padding: 10px 12px;
   border: none;
   border-radius: 2px;
@@ -147,6 +147,7 @@ const ConsultationSelect = styled.select`
 `;
 
 const Consultation: React.FC = () => {
+  const [result, setResult] = React.useState("");
   const [formData, setFormData] = React.useState({
     nome: '',
     telefone: '',
@@ -160,51 +161,74 @@ const Consultation: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleWhatsApp = (e: React.FormEvent) => {
+  const handleWeb3Forms = async (e: React.FormEvent) => {
     e.preventDefault();
+    setResult("Enviando...");
+    
+    const formDataObj = new FormData();
+    formDataObj.append("access_key", "d88e0a50-0410-4c8b-9254-2f67d138bc8c");
+    formDataObj.append("subject", `Novo Orçamento: ${formData.servico || formData.assunto}`);
+    formDataObj.append("from_name", formData.nome);
+    formDataObj.append("email", formData.email);
+    formDataObj.append("message", `Nome: ${formData.nome}\nTelefone: ${formData.telefone}\nE-mail: ${formData.email}\nServiço: ${formData.servico}\nAssunto: ${formData.assunto}\n\nMensagem: ${formData.mensagem}`);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataObj
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResult("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+        setFormData({ nome: '', telefone: '', email: '', assunto: '', servico: '', mensagem: '' });
+      } else {
+        setResult("Ocorreu um erro ao enviar. Por favor, tente novamente ou use o WhatsApp.");
+      }
+    } catch (error) {
+      setResult("Erro de conexão. Por favor, use o WhatsApp.");
+    }
+  };
+
+  const handleWhatsAppDirect = () => {
     const texto = `Olá! Meu nome é ${formData.nome}. Gostaria de solicitar uma consultoria sobre ${formData.servico || formData.assunto || 'serviços'}.\n\nDetalhes: ${formData.mensagem}`;
     const uri = `https://wa.me/5511980743311?text=${encodeURIComponent(texto)}`;
     window.open(uri, '_blank');
   };
 
-
-  const handleEmail = () => {
-    const body = `Nome: ${formData.nome}\nTelefone: ${formData.telefone}\nServiço: ${formData.servico}\n\nMensagem: ${formData.mensagem}`;
-    const mailto = `mailto:napedroantonio@gmail.com?subject=${encodeURIComponent(formData.assunto || 'Consulta Landing Page')}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-  };
-
   return (
-
     <ConsultationSection id="consultation">
       <ConsultationOverlay />
       <ConsultationContainer>
         <ConsultationTitle>CONSULTORIA</ConsultationTitle>
         <ConsultationContent>
-          <ConsultationForm onSubmit={handleWhatsApp}>
+          <ConsultationForm onSubmit={handleWeb3Forms}>
             <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput name="nome" type="text" placeholder="Nome Completo" required onChange={handleChange} />
-              <ConsultationInput name="telefone" type="text" placeholder="Telefone" required onChange={handleChange} />
+              <ConsultationInput name="nome" type="text" placeholder="Nome Completo" value={formData.nome} required onChange={handleChange} />
+              <ConsultationInput name="telefone" type="text" placeholder="Telefone" value={formData.telefone} required onChange={handleChange} />
             </div>
             <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput name="email" type="email" placeholder="Email" required onChange={handleChange} />
-              <ConsultationInput name="assunto" type="text" placeholder="Assunto" onChange={handleChange} />
+              <ConsultationInput name="email" type="email" placeholder="Email" value={formData.email} required onChange={handleChange} />
+              <ConsultationInput name="assunto" type="text" placeholder="Assunto" value={formData.assunto} onChange={handleChange} />
             </div>
-            <ConsultationSelect name="servico" onChange={handleChange}>
+            <ConsultationSelect name="servico" value={formData.servico} onChange={handleChange}>
               <option value="">Selecione o tipo de serviço</option>
               <option value="construcao">Construção</option>
               <option value="reforma">Reforma</option>
               <option value="consultoria">Consultoria</option>
               <option value="projeto">Projeto</option>
             </ConsultationSelect>
-            <ConsultationTextArea name="mensagem" placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." onChange={handleChange} />
-            <div style={{ display: 'flex', gap: '10px' }}>
-                <ConsultationButton type="submit" style={{ flex: 1 }}>
-                  💬 WHATSAPP
-                </ConsultationButton>
-                <ConsultationButton type="button" onClick={handleEmail} style={{ flex: 1, background: colors.primary, color: 'white' }}>
-                  📧 E-MAIL
-                </ConsultationButton>
+            <ConsultationTextArea name="mensagem" value={formData.mensagem} placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." onChange={handleChange} />
+            <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <ConsultationButton type="submit" style={{ flex: 1 }}>
+                    🚀 ENVIAR POR E-MAIL
+                  </ConsultationButton>
+                  <ConsultationButton type="button" onClick={handleWhatsAppDirect} style={{ flex: 1, background: '#25D366', color: 'white', border: 'none' }}>
+                    💬 WHATSAPP
+                  </ConsultationButton>
+                </div>
+                {result && <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '0.9rem', color: result.includes("sucesso") ? colors.secondary : "#ff4d4d" }}>{result}</p>}
             </div>
           </ConsultationForm>
 
