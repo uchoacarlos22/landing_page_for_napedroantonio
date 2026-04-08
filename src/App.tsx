@@ -10,6 +10,7 @@ import Testimonials from "./components/Testimonials";
 import MapSectionComponent from "./components/MapSectionComponent";
 import Footer from "./components/Footer";
 import ProjectsWrapper from "./components/ProjectsWrapper";
+import AllServices from "./components/AllServices";
 import ChatWidget from "./components/ChatWidget";
 import { LampDemo } from "./components/Lamp";
 import { AnimatePresence, motion } from "framer-motion";
@@ -48,6 +49,7 @@ function App() {
             <Features />
             <AboutUs />
             <Services />
+            <AllServices />
             <ProjectsWrapper />
             <Consultation />
             <FAQ />
