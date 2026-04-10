@@ -77,6 +77,23 @@ const PhoneNumber = styled.div`
   align-items: center;
 `;
 
+const WhatsAppButtonTop = styled.a`
+  display: flex;
+  align-items: center;
+  background-color: #25D366;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.75rem;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #1fba59;
+  }
+`;
+
 const SocialIcons = styled.div`
   display: flex;
 `;
@@ -259,15 +276,14 @@ const Header: React.FC = () => {
               Morumbi, São Paulo - SP
             </Address>
             <PhoneNumber>
-              <Phone size={16} style={{ marginRight: "5px" }} aria-hidden="true" />
-              <a 
+              <WhatsAppButtonTop 
                 href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
                 target="_blank" 
                 rel="noopener noreferrer"
-                style={{ color: 'inherit', textDecoration: 'none' }}
               >
-                (Clique para falar no WhatsApp)
-              </a>
+                <Phone size={14} style={{ marginRight: "6px" }} aria-hidden="true" />
+                Falar no WhatsApp
+              </WhatsAppButtonTop>
             </PhoneNumber>
 
           </ContactInfo>

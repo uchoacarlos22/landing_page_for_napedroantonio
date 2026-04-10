@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import { colors } from "../theme";
-import { FaGlobe } from "react-icons/fa";
+import { FaGlobe, FaWhatsapp } from "react-icons/fa";
 import TratorIcon from "../assets/images/trator-icon.svg";
 import footerImg from "../assets/images/footer.jpg";
 
@@ -145,6 +145,24 @@ const FooterBottom = styled.div`
   }
 `;
 
+const WAButtonFooter = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #25D366;
+  color: white !important;
+  padding: 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #1fba59;
+  }
+`;
+
 const Footer: React.FC = () => (
   <FooterContainer>
     <FooterInner>
@@ -185,16 +203,16 @@ const Footer: React.FC = () => (
           <strong>Endereço:</strong> Morumbi, São Paulo - SP
         </ContactItem>
         <ContactItem>
-          <strong>Telefone:</strong>{" "}
-          <a 
-            href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ color: 'inherit', textDecoration: 'none' }}
-          >
-            (Clique para falar no WhatsApp)
-          </a>
+          <strong>Telefone:</strong>
         </ContactItem>
+        <WAButtonFooter 
+          href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <FaWhatsapp size={8} />
+          Falar no WhatsApp
+        </WAButtonFooter>
 
         <ContactItem>
           <strong>E-mail:</strong> napedroantonio@gmail.com

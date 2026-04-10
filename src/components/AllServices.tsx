@@ -20,6 +20,9 @@ import imgManutencao      from "../assets/images/services/srv-manutencao.jpeg";
 import imgReparos         from "../assets/images/services/srv-reparos.jpeg";
 import imgComercial       from "../assets/images/services/srv-comercial.jpeg";
 import imgGerenciamento   from "../assets/images/services/srv-gerenciamento.jpeg";
+import imgPaisagismo      from "../assets/images/services/srv-paisagismo.jpeg";
+import imgMoveis          from "../assets/images/services/srv-moveis.jpeg";
+import imgVidracaria      from "../assets/images/services/srv-vidracaria.jpeg";
 
 // ============ DATA ============
 
@@ -54,12 +57,17 @@ const servicesData: ServiceData[] = [
   // Comercial
   { image: imgComercial,     title: "Reforma Comercial",      group: "Comercial", shortDesc: "Lojas, escritórios e espaços.", fullDesc: "Reformamos espaços comerciais completos com layout otimizado, acessibilidade e acabamentos modernos.", benefits: ["Projeto de layout", "Elétrica e ar condicionado", "Pisos e revestimentos", "Fachada e vitrine", "Prazo definido e contrato"], whatsappMsg: "Olá! Gostaria de solicitar um orçamento para *Reforma Comercial*." },
   { image: imgGerenciamento, title: "Gerenciamento de Obra",  group: "Comercial", shortDesc: "Gestão da obra do início ao fim.", fullDesc: "Gerenciamos sua obra por completo: cronograma, equipe, materiais e qualidade com relatórios periódicos.", benefits: ["Cronograma detalhado", "Controle de materiais", "Equipe especializada", "Relatórios de progresso", "Entrega com qualidade"], whatsappMsg: "Olá! Gostaria de saber mais sobre *Gerenciamento de Obra*." },
+  // Decor & Acabamentos
+  { image: imgPaisagismo, title: "Paisagismo", group: "Decor", shortDesc: "Jardins e áreas verdes.", fullDesc: "Projetos de paisagismo residencial e comercial, criando áreas verdes harmoniosas e fáceis de manter.", benefits: ["Projeto paisagístico", "Escolha de espécies", "Plantio e adubação", "Sistemas de irrigação", "Manutenção preventiva"], whatsappMsg: "Olá! Gostaria de solicitar um orçamento para *Paisagismo*." },
+  { image: imgMoveis, title: "Móveis Planejados", group: "Decor", shortDesc: "Marcenaria sob medida.", fullDesc: "Desenvolvemos móveis planejados para otimizar seus espaços com design, funcionalidade e materiais de alta durabilidade.", benefits: ["Projeto 3D personalizado", "Marcenaria de alto padrão", "Ferragens com amortecimento", "Otimização de espaços", "Instalação especializada"], whatsappMsg: "Olá! Gostaria de solicitar um orçamento para *Móveis Planejados*." },
+  { image: imgVidracaria, title: "Vidraçaria", group: "Decor", shortDesc: "Vidros e esquadrias.", fullDesc: "Fornecimento e instalação de vidros temperados, espelhos sob medida, fechamento de sacadas e esquadrias de alumínio.", benefits: ["Box para banheiros", "Fechamento de sacadas", "Guarda-corpos em vidro", "Espelhos sob medida", "Esquadrias de alumínio"], whatsappMsg: "Olá! Gostaria de solicitar um orçamento para *Vidraçaria*." },
 ];
 
 const tabs = [
   { id: "Reformas",  label: "Reformas",    desc: "Residenciais e comerciais" },
   { id: "Técnicos",  label: "Técnicos",    desc: "Elétrica, hidráulica e mais" },
   { id: "Obras",     label: "Obras",       desc: "Construção e manutenção" },
+  { id: "Decor",     label: "Decor",       desc: "Paisagismo e planejados" },
   { id: "Comercial", label: "Comercial",   desc: "Lojas e escritórios" },
 ];
 
