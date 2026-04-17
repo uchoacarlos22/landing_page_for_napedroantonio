@@ -67,7 +67,7 @@ const slidesData: SlideData[] = [
 ];
 
 // ====== Styled Components ======
-const Container = styled.div.attrs(() => ({ id: 'projects' }))`
+const Container = styled.div.attrs(() => ({ id: "projects" }))`
   width: auto;
 `;
 
@@ -87,15 +87,15 @@ const CarouselWrapper = styled.div`
   }
 `;
 
-const SlideWrapper = styled.div<{ active: boolean }>`
+const SlideWrapper = styled.div<{ $active: boolean }>`
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  opacity: ${(props) => (props.active ? 1 : 0)};
+  opacity: ${(props) => (props.$active ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
-  z-index: ${(props) => (props.active ? 1 : 0)};
+  z-index: ${(props) => (props.$active ? 1 : 0)};
 `;
 
 const BeforeAfterContainer = styled.div`
@@ -116,20 +116,20 @@ const ImageBefore = styled.img`
   object-fit: cover;
 `;
 
-const ImageAfter = styled.img<{ sliderPos: number }>`
+const ImageAfter = styled.img<{ $sliderPos: number }>`
   position: absolute;
   top: 0;
   left: 0;
-  width: ${(props) => props.sliderPos}%;
+  width: ${(props) => props.$sliderPos}%;
   height: 100%;
   object-fit: cover;
   transition: width 0.8s ease-in-out;
 `;
 
-const SliderLine = styled.div<{ sliderPos: number }>`
+const SliderLine = styled.div<{ $sliderPos: number }>`
   position: absolute;
   top: 0;
-  left: ${(props) => props.sliderPos}%;
+  left: ${(props) => props.$sliderPos}%;
   transform: translateX(-50%);
   width: 4px;
   height: 100%;
@@ -179,16 +179,19 @@ const Description = styled.p`
 `;
 
 // ====== Overlay "Tapume" ======
-const TransitionOverlay = styled.div<{ active: boolean }>`
+const TransitionOverlay = styled.div<{ $active: boolean }>`
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: url("/src/assets/images/fundo-tapume.jpg") center center / cover no-repeat;
+  background: url("/src/assets/images/fundo-tapume.jpg") center center / cover
+    no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: ${(props) => props.active ? "translateX(0%)" : "translateX(-100%)"};
+  transform: ${(props) =>
+    props.$active ? "translateX(0%)" : "translateX(-100%)"};
   transition: transform 0.6s ease-in-out;
   z-index: 30; // aumentar acima dos controles
 `;
@@ -219,11 +222,11 @@ const CarouselIndicators = styled.div`
   }
 `;
 
-const Indicator = styled.div<{ active: boolean }>`
+const Indicator = styled.div<{ $active: boolean }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: ${(props) => (props.active ? colors.secondary : "#ccc")};
+  background: ${(props) => (props.$active ? colors.secondary : "#ccc")};
   cursor: pointer;
 `;
 
@@ -346,7 +349,7 @@ export default function Projects() {
         onTouchEnd={handleTouchMove}
       >
         {slidesData.map((slide, index) => (
-          <SlideWrapper key={index} active={index === currentSlide}>
+          <SlideWrapper key={index} $active={index === currentSlide}>
             <BeforeAfterContainer
               onMouseDown={handleMouseDown}
               onTouchStart={handleMouseDown}
@@ -358,9 +361,10 @@ export default function Projects() {
               <ImageAfter
                 src={slide.afterSrc}
                 alt={`Depois - ${slide.title}`}
-                sliderPos={sliderPos}
+                $sliderPos={sliderPos}
               />
-              <SliderLine sliderPos={sliderPos} />
+
+              <SliderLine $sliderPos={sliderPos} />
               <SlideOverlay>
                 <TitleWrapper>
                   <Title>{slide.title}</Title>
@@ -373,7 +377,7 @@ export default function Projects() {
         ))}
 
         {/* Overlay tapume com logo */}
-        <TransitionOverlay active={overlayActive}>
+        <TransitionOverlay $active={overlayActive}>
           <OverlayLogo src={logo} alt="Logo-3d" />
         </TransitionOverlay>
         <ControlsContainer>
@@ -381,7 +385,7 @@ export default function Projects() {
             {slidesData.map((_, idx) => (
               <Indicator
                 key={idx}
-                active={idx === currentSlide}
+                $active={idx === currentSlide}
                 onClick={() => goToSlide(idx)}
               />
             ))}

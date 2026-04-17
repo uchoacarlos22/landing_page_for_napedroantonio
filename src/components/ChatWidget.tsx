@@ -36,7 +36,7 @@ const FloatingButton = styled.a`
 `;
 
 const ChatWidget: React.FC = () => {
-  const whatsappNumber = "5511980743311";
+  const whatsappNumber = "5511967796576";
   const message = encodeURIComponent("Olá! Vi o site da NAPEDROANTONIO e gostaria de informações sobre construção e reformas.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 

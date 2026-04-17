@@ -149,6 +149,19 @@ const ConsultationSelect = styled.select`
   color: ${colors.textPrimary};
 `;
 
+const FormRow = styled.div`
+  display: flex;
+  gap: 16px;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 const Consultation: React.FC = () => {
   const [result, setResult] = React.useState("");
   const [formData, setFormData] = React.useState({
@@ -169,7 +182,8 @@ const Consultation: React.FC = () => {
     setResult("Enviando...");
     
     const formDataObj = new FormData();
-    formDataObj.append("access_key", "d88e0a50-0410-4c8b-9254-2f67d138bc8c");
+    // Sugestão: Usar variável de ambiente VITE_WEB3FORMS_KEY
+    formDataObj.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY || "d88e0a50-0410-4c8b-9254-2f67d138bc8c");
     formDataObj.append("subject", `Novo Orçamento: ${formData.servico || formData.assunto}`);
     formDataObj.append("from_name", formData.nome);
     formDataObj.append("email", formData.email);
@@ -195,7 +209,7 @@ const Consultation: React.FC = () => {
 
   const handleWhatsAppDirect = () => {
     const texto = `Olá! Meu nome é ${formData.nome}. Gostaria de solicitar uma consultoria sobre ${formData.servico || formData.assunto || 'serviços'}.\n\nDetalhes: ${formData.mensagem}`;
-    const uri = `https://wa.me/5511980743311?text=${encodeURIComponent(texto)}`;
+    const uri = `https://wa.me/5511967796576?text=${encodeURIComponent(texto)}`;
     window.open(uri, '_blank');
   };
 
@@ -206,14 +220,14 @@ const Consultation: React.FC = () => {
         <ConsultationTitle>CONSULTORIA</ConsultationTitle>
         <ConsultationContent>
           <ConsultationForm onSubmit={handleWeb3Forms}>
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput name="nome" type="text" placeholder="Nome Completo" value={formData.nome} required onChange={handleChange} />
-              <ConsultationInput name="telefone" type="text" placeholder="Telefone" value={formData.telefone} required onChange={handleChange} />
-            </div>
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <ConsultationInput name="email" type="email" placeholder="Email" value={formData.email} required onChange={handleChange} />
-              <ConsultationInput name="assunto" type="text" placeholder="Assunto" value={formData.assunto} onChange={handleChange} />
-            </div>
+            <FormRow>
+              <ConsultationInput aria-label="Nome Completo" name="nome" type="text" placeholder="Nome Completo" value={formData.nome} required onChange={handleChange} />
+              <ConsultationInput aria-label="Telefone" name="telefone" type="text" placeholder="Telefone (DDD)" value={formData.telefone} required onChange={handleChange} />
+            </FormRow>
+            <FormRow>
+              <ConsultationInput aria-label="E-mail" name="email" type="email" placeholder="Email" value={formData.email} required onChange={handleChange} />
+              <ConsultationInput aria-label="Assunto" name="assunto" type="text" placeholder="Assunto" value={formData.assunto} onChange={handleChange} />
+            </FormRow>
             <ConsultationSelect name="servico" value={formData.servico} onChange={handleChange}>
               <option value="">Selecione o tipo de serviço</option>
               <option value="construcao">Construção</option>
@@ -221,16 +235,16 @@ const Consultation: React.FC = () => {
               <option value="consultoria">Consultoria</option>
               <option value="projeto">Projeto</option>
             </ConsultationSelect>
-            <ConsultationTextArea name="mensagem" value={formData.mensagem} placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." onChange={handleChange} />
+            <ConsultationTextArea aria-label="Mensagem" name="mensagem" value={formData.mensagem} placeholder="Descreva detalhes do seu projeto, necessidades específicas, localização, etc." onChange={handleChange} />
             <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <ButtonGroup>
                   <ConsultationButton type="submit" style={{ flex: 1 }}>
                     🚀 ENVIAR POR E-MAIL
                   </ConsultationButton>
                   <ConsultationButton type="button" onClick={handleWhatsAppDirect} style={{ flex: 1, background: '#25D366', color: 'white', border: 'none' }}>
                     💬 WHATSAPP
                   </ConsultationButton>
-                </div>
+                </ButtonGroup>
                 {result && <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '0.9rem', color: result.includes("sucesso") ? colors.secondary : "#ff4d4d" }}>{result}</p>}
             </div>
           </ConsultationForm>
@@ -248,7 +262,7 @@ const Consultation: React.FC = () => {
               </ConsultationHoursListItem>
               <ConsultationHoursListItem>
                 <span>Sábado</span>
-                <span>9AM - 5PM</span>
+                <span>8AM - 12PM</span>
               </ConsultationHoursListItem>
               <ConsultationHoursListItem>
                 <span>Domingo</span>

@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { Link } from "react-scroll";
-import {
-  MapPin,
-  Phone,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Menu,
-  X,
-} from "lucide-react";
+import { MapPin, Phone, Menu, X, ChevronDown } from "lucide-react";
 import { breakpoints, colors } from "../theme";
-import logo from "../assets/images/npa_logo_sf.png"; // ✅ Importando logo
+import logo from "../assets/images/npa_logo_sf.png";
 
 // === keyframe para slide in da esquerda ===
 const slideIn = keyframes`
@@ -32,21 +23,25 @@ const HeaderContainer = styled.header`
   width: 100%;
   display: flex;
   flex-direction: column;
-  position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
   height: 60px;
+
+  @media (max-width: ${breakpoints.tabletMax}) {
+    width: 100%;
+    top: 0;
+  }
 `;
 
 const TopBar = styled.div`
-  width: 90%;
-  align-self: center;
-  padding: 8px 0;
-  font-size: 12px;
-  position: relative;
-  top: -5px;
-  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 44px; /* 🔥 FIXO */
+  z-index: 1000;
+  background-color: ${colors.primary};
+  color: ${colors.background};
 
   @media (max-width: ${breakpoints.tabletMax}) {
     display: none;
@@ -80,7 +75,7 @@ const PhoneNumber = styled.div`
 const WhatsAppButtonTop = styled.a`
   display: flex;
   align-items: center;
-  background-color: #25D366;
+  background-color: #25d366;
   color: white;
   padding: 4px 12px;
   border-radius: 4px;
@@ -110,27 +105,26 @@ const SocialLink = styled.a`
 `;
 
 const NavigationBar = styled.nav<{ $isScrolled: boolean }>`
-  width: 90%;
+  position: fixed;
+  top: ${(p) => (p.$isScrolled ? "0px" : "44px")};
+  left: ${(p) => (p.$isScrolled ? "0%" : "5%")};
+  width: ${(p) => (p.$isScrolled ? "98.8%" : "90%")};
+
   background-color: ${colors.background};
-  align-self: center;
-  transition: all 0.3s ease-in-out;
-  position: relative;
-  top: -15px;
-  z-index: 100;
-  max-height: 60px;
+  z-index: 999;
+
+  height: 60px;
+
+  border-radius: ${(p) => (p.$isScrolled ? "0" : "0 0 12px 12px")};
+
+  transition: all 0.35s ease;
 
   @media (max-width: ${breakpoints.tabletMax}) {
     width: 100%;
+    left: 0;
     top: 0;
+    border-radius: 0;
   }
-
-  ${(p) =>
-    p.$isScrolled &&
-    `
-    width: 100%;
-    top: 0;
-    position: fixed;
-  `}
 `;
 
 const NavigationContent = styled.div`
@@ -178,9 +172,9 @@ const MenuIcon = styled.button`
 
 const NavLinks = styled.div<{ $isMenuOpen: boolean }>`
   display: flex;
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 50px;
   align-items: center;
 
   @media (max-width: ${breakpoints.tabletMax}) {
@@ -199,15 +193,18 @@ const NavLinks = styled.div<{ $isMenuOpen: boolean }>`
   }
 `;
 
-const NavLink = styled.a<{ delay: number }>`
+const NavLink = styled.a<{ delay: number; $active?: boolean }>`
   font-size: 16px;
   text-transform: uppercase;
   font-weight: 700;
-  color: ${colors.secondary};
+  color: ${(p) => (p.$active ? colors.primary : colors.secondary)};
   cursor: pointer;
   opacity: 0.9;
   transition: all 0.3s ease;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 
   &:hover,
   &:focus {
@@ -222,9 +219,97 @@ const NavLink = styled.a<{ delay: number }>`
     opacity: 0;
     animation: ${slideIn} 0.4s forwards;
     animation-delay: ${(p) => p.delay}s;
+    width: 100%;
   }
 `;
 
+const DropdownContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: ${breakpoints.tabletMax}) {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+`;
+
+const DropdownMenu = styled.div<{ $isOpen: boolean }>`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(${(p) => (p.$isOpen ? "10px" : "0")});
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  min-width: 180px;
+  opacity: ${(p) => (p.$isOpen ? 1 : 0)};
+  visibility: ${(p) => (p.$isOpen ? "visible" : "hidden")};
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: ${breakpoints.tabletMax}) {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    background: transparent;
+    box-shadow: none;
+    padding: 5px 0 5px 20px;
+    display: ${(p) => (p.$isOpen ? "block" : "none")};
+    border: none;
+
+    &::before {
+      display: none;
+    }
+  }
+`;
+
+const DropdownItem = styled.a`
+  display: block;
+  padding: 10px 20px;
+  color: ${colors.primary};
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(218, 165, 32, 0.1);
+    color: ${colors.secondary};
+    padding-left: 25px;
+  }
+
+  @media (max-width: ${breakpoints.tabletMax}) {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 0;
+    font-size: 14px;
+    text-transform: none;
+
+    &:hover {
+      background: transparent;
+      color: ${colors.secondary};
+      padding-left: 5px;
+    }
+  }
+`;
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -233,9 +318,35 @@ const Header: React.FC = () => {
   const menuIconRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 0);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    let ticking = false;
+
+    const handleScroll = (e: Event) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollTop =
+            window.scrollY ||
+            document.documentElement.scrollTop ||
+            (e.target as HTMLElement)?.scrollTop ||
+            0;
+
+          const shouldBeScrolled = scrollTop > 40; // 🔥 ajuste fino aqui
+
+          setIsScrolled((prev) =>
+            prev !== shouldBeScrolled ? shouldBeScrolled : prev,
+          );
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
   }, []);
 
   useEffect(() => {
@@ -259,12 +370,21 @@ const Header: React.FC = () => {
   const sections = [
     { name: "Home", id: "hero" },
     { name: "Sobre", id: "about" },
-    { name: "Serviços", id: "services" },
+    {
+      name: "Serviços",
+      id: "services",
+      subItems: [
+        { name: "Destaques", id: "services" },
+        { name: "Catálogo Completo", id: "all-services" },
+      ],
+    },
     { name: "Projetos", id: "projects" },
     { name: "Consultoria", id: "consultation" },
     { name: "FAQ", id: "faq" },
     { name: "Depoimentos", id: "testimonials" },
   ];
+
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
     <HeaderContainer>
@@ -272,20 +392,27 @@ const Header: React.FC = () => {
         <TopBarContent>
           <ContactInfo>
             <Address>
-              <MapPin size={16} style={{ marginRight: "5px" }} aria-hidden="true" />
+              <MapPin
+                size={16}
+                style={{ marginRight: "5px" }}
+                aria-hidden="true"
+              />
               Morumbi, São Paulo - SP
             </Address>
             <PhoneNumber>
-              <WhatsAppButtonTop 
-                href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
-                target="_blank" 
+              <WhatsAppButtonTop
+                href="https://wa.me/5511967796576?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas."
+                target="_blank"
                 rel="noopener noreferrer"
               >
-                <Phone size={14} style={{ marginRight: "6px" }} aria-hidden="true" />
+                <Phone
+                  size={14}
+                  style={{ marginRight: "6px" }}
+                  aria-hidden="true"
+                />
                 Falar no WhatsApp
               </WhatsAppButtonTop>
             </PhoneNumber>
-
           </ContactInfo>
           {/* <SocialIcons>
             <SocialLink href="#" aria-label="Facebook">
@@ -301,30 +428,119 @@ const Header: React.FC = () => {
               <Youtube size={16} />
             </SocialLink>
           </SocialIcons> */}
-
         </TopBarContent>
       </TopBar>
 
       <NavigationBar $isScrolled={isScrolled}>
         <NavigationContent>
-          <Logo href="#hero" aria-label="Ir para seção inicial">
+          <Logo
+            to="hero"
+            smooth={true}
+            duration={500}
+            aria-label="Ir para seção inicial"
+            onClick={() => {
+              document
+                .getElementById("hero")
+                ?.scrollIntoView({ behavior: "smooth" });
+              window.history.replaceState(null, "", "/");
+            }}
+          >
             <img src={logo} alt="Logo da empresa NAPEDROANTONIO" />
           </Logo>
 
-
           <NavLinks ref={menuRef} $isMenuOpen={isMenuOpen}>
-            {sections.map((sec, i) => (
-              <NavLink
-                key={sec.id}
-                href={`#${sec.id}`}
-                onClick={() => setIsMenuOpen(false)}
-                delay={i * 0.1}
-              >
-                {sec.name.toUpperCase()}
-              </NavLink>
-            ))}
-          </NavLinks>
+            {sections.map((sec, i) =>
+              sec.subItems ? (
+                <DropdownContainer
+                  key={sec.id}
+                  onMouseEnter={() =>
+                    window.innerWidth > 992 && setActiveDropdown(sec.id)
+                  }
+                  onMouseLeave={() =>
+                    window.innerWidth > 992 && setActiveDropdown(null)
+                  }
+                >
+                  <NavLink
+                    href=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (window.innerWidth <= 992) {
+                        setActiveDropdown(
+                          activeDropdown === sec.id ? null : sec.id,
+                        );
+                      } else {
+                        setIsMenuOpen(false);
+                      }
+                    }}
+                    delay={i * 0.1}
+                    $active={activeDropdown === sec.id}
+                  >
+                    {sec.name.toUpperCase()}
+                    <ChevronDown
+                      size={14}
+                      style={{
+                        transform:
+                          activeDropdown === sec.id ? "rotate(180deg)" : "none",
+                        transition: "transform 0.3s",
+                      }}
+                    />
+                  </NavLink>
+                  <DropdownMenu $isOpen={activeDropdown === sec.id}>
+                    {sec.subItems.map((sub) => (
+                      <DropdownItem
+                        key={sub.id}
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
 
+                          const el = document.getElementById(sub.id);
+
+                          if (el) {
+                            el.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+
+                            // 🔥 Atualiza URL igual seu observer faz
+                            const slugMap: Record<string, string> = {
+                              services: "/servicos",
+                              "all-services": "/catalogo",
+                            };
+
+                            window.history.replaceState(
+                              null,
+                              "",
+                              slugMap[sub.id] || "/",
+                            );
+                          }
+
+                          setIsMenuOpen(false);
+                          setActiveDropdown(null);
+                        }}
+                      >
+                        {sub.name}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </DropdownContainer>
+              ) : (
+                <NavLink
+                  key={sec.id}
+                  href=""
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementById(sec.id)
+                      ?.scrollIntoView({ behavior: "smooth" });
+                    setIsMenuOpen(false);
+                  }}
+                  delay={i * 0.1}
+                >
+                  {sec.name.toUpperCase()}
+                </NavLink>
+              ),
+            )}
+          </NavLinks>
 
           <MenuIcon
             ref={menuIconRef}

@@ -18,12 +18,52 @@ import { AnimatePresence, motion } from "framer-motion";
 function App() {
   const [loading, setLoading] = useState(true);
 
+  // Map section IDs to clean slugs (no #, in Portuguese)
+  const sectionSlugs: Record<string, string> = {
+    hero: "/",
+    about: "/sobre",
+    services: "/servicos",
+    "all-services": "/catalogo",
+    projects: "/projetos",
+    consultation: "/consultoria",
+    faq: "/faq",
+    testimonials: "/depoimentos",
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  // After the page loads, observe sections and update URL silently
+  useEffect(() => {
+    if (loading) return;
+
+    const sectionIds = Object.keys(sectionSlugs);
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            const slug = sectionSlugs[id];
+            window.history.replaceState(null, "", slug);
+          }
+        },
+        { threshold: 0.4 }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((obs) => obs.disconnect());
+  }, [loading]);
 
   return (
     <div className="App overflow-x-hidden min-h-screen bg-slate-950">

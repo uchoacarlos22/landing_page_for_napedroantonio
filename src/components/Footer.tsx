@@ -203,10 +203,10 @@ const Footer: React.FC = () => (
           <strong>Endereço:</strong> Morumbi, São Paulo - SP
         </ContactItem>
         <ContactItem>
-          <strong>Telefone:</strong>
+          <strong>Telefone:</strong> (11) 96779-6576
         </ContactItem>
         <WAButtonFooter 
-          href="https://wa.me/5511980743311?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
+          href="https://wa.me/5511967796576?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
           target="_blank" 
           rel="noopener noreferrer"
         >
@@ -215,7 +215,7 @@ const Footer: React.FC = () => (
         </WAButtonFooter>
 
         <ContactItem>
-          <strong>E-mail:</strong> napedroantonio@gmail.com
+          <strong>E-mail:</strong> contato@napedroantonio.com.br
         </ContactItem>
         <SocialIcons>
           <a href="https://www.google.com/maps/search/?api=1&query=Construção+e+reforma+no+Morumbi+NapedroAntonio" target="_blank" rel="noopener noreferrer">

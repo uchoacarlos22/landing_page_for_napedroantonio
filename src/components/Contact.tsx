@@ -43,7 +43,7 @@ const Contact: React.FC = () => {
 
   const handleWhatsAppRedirect = () => {
     const texto = `Olá! Meu nome é ${formData.name}. Gostaria de entrar em contato.\n\nE-mail: ${formData.email}\n\nMensagem: ${formData.message}`;
-    const uri = `https://wa.me/5511980743311?text=${encodeURIComponent(texto)}`;
+    const uri = `https://wa.me/5511967796576?text=${encodeURIComponent(texto)}`;
     window.open(uri, '_blank');
   };
 
@@ -66,10 +66,10 @@ const Contact: React.FC = () => {
             </p>
             <ul className="list-none">
               <li className="mb-2">
-                <strong>Telefone:</strong> (11) 98074-3311
+                <strong>Telefone:</strong> (11) 96779-6576
               </li>
               <li className="mb-2">
-                <strong>Email:</strong> napedroantonio@gmail.com
+                <strong>Email:</strong> contato@napedroantonio.com.br
               </li>
               <li className="mb-2">
                 <strong>Endereço:</strong> Morumbi, São Paulo - SP
