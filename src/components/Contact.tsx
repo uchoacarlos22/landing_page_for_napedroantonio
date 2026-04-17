@@ -1,23 +1,25 @@
-import React from 'react';
+import React from "react";
 
 const Contact: React.FC = () => {
   const [result, setResult] = React.useState("");
   const [formData, setFormData] = React.useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleWeb3Forms = async (e: React.FormEvent) => {
     e.preventDefault();
     setResult("Enviando...");
-    
+
     const formDataObj = new FormData();
-    formDataObj.append("access_key", "d88e0a50-0410-4c8b-9254-2f67d138bc8c");
+    formDataObj.append("access_key", "1f40f97a-6a44-4124-a455-79754d8d56f5");
     formDataObj.append("subject", "Contato via Landing Page");
     formDataObj.append("from_name", formData.name);
     formDataObj.append("email", formData.email);
@@ -26,13 +28,13 @@ const Contact: React.FC = () => {
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formDataObj
+        body: formDataObj,
       });
 
       const data = await response.json();
       if (data.success) {
         setResult("Mensagem enviada com sucesso! Entraremos em contato.");
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: "", email: "", message: "" });
       } else {
         setResult("Erro ao enviar. Tente o WhatsApp.");
       }
@@ -44,7 +46,7 @@ const Contact: React.FC = () => {
   const handleWhatsAppRedirect = () => {
     const texto = `Olá! Meu nome é ${formData.name}. Gostaria de entrar em contato.\n\nE-mail: ${formData.email}\n\nMensagem: ${formData.message}`;
     const uri = `https://wa.me/5511967796576?text=${encodeURIComponent(texto)}`;
-    window.open(uri, '_blank');
+    window.open(uri, "_blank");
   };
 
   return (
@@ -61,8 +63,8 @@ const Contact: React.FC = () => {
               atendê-lo!
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Você pode nos contatar através do formulário ao lado ou
-              pelos seguintes meios:
+              Você pode nos contatar através do formulário ao lado ou pelos
+              seguintes meios:
             </p>
             <ul className="list-none">
               <li className="mb-2">
@@ -77,7 +79,10 @@ const Contact: React.FC = () => {
             </ul>
           </div>
           <div>
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleWeb3Forms}>
+            <form
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+              onSubmit={handleWeb3Forms}
+            >
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -146,7 +151,13 @@ const Contact: React.FC = () => {
                 >
                   WHATSAPP 💬
                 </button>
-                {result && <p className={`text-center text-sm font-bold ${result.includes("sucesso") || result.includes("enviada") ? "text-green-600" : "text-red-600"}`}>{result}</p>}
+                {result && (
+                  <p
+                    className={`text-center text-sm font-bold ${result.includes("sucesso") || result.includes("enviada") ? "text-green-600" : "text-red-600"}`}
+                  >
+                    {result}
+                  </p>
+                )}
               </div>
             </form>
           </div>
