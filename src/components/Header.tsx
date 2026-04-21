@@ -438,12 +438,6 @@ const Header: React.FC = () => {
             smooth={true}
             duration={500}
             aria-label="Ir para seção inicial"
-            onClick={() => {
-              document
-                .getElementById("hero")
-                ?.scrollIntoView({ behavior: "smooth" });
-              window.history.replaceState(null, "", "/");
-            }}
           >
             <img src={logo} alt="Logo da empresa NAPEDROANTONIO" />
           </Logo>
@@ -492,28 +486,9 @@ const Header: React.FC = () => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-
-                          const el = document.getElementById(sub.id);
-
-                          if (el) {
-                            el.scrollIntoView({
-                              behavior: "smooth",
-                              block: "start",
-                            });
-
-                            // 🔥 Atualiza URL igual seu observer faz
-                            const slugMap: Record<string, string> = {
-                              services: "/servicos",
-                              "all-services": "/catalogo",
-                            };
-
-                            window.history.replaceState(
-                              null,
-                              "",
-                              slugMap[sub.id] || "/",
-                            );
-                          }
-
+                          document
+                            .getElementById(sub.id)
+                            ?.scrollIntoView({ behavior: "smooth" });
                           setIsMenuOpen(false);
                           setActiveDropdown(null);
                         }}
