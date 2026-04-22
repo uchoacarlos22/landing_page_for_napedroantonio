@@ -199,6 +199,9 @@ const Consultation: React.FC = () => {
       if (data.success) {
         setResult("Mensagem enviada com sucesso! Entraremos em contato em breve.");
         setFormData({ nome: '', telefone: '', email: '', assunto: '', servico: '', mensagem: '' });
+        // GA4 conversion event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "form_submit", form_id: "consultation_form" });
       } else {
         setResult("Ocorreu um erro ao enviar. Por favor, tente novamente ou use o WhatsApp.");
       }

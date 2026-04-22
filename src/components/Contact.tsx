@@ -35,6 +35,9 @@ const Contact: React.FC = () => {
       if (data.success) {
         setResult("Mensagem enviada com sucesso! Entraremos em contato.");
         setFormData({ name: "", email: "", message: "" });
+        // GA4 conversion event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "form_submit", form_id: "contact_form" });
       } else {
         setResult("Erro ao enviar. Tente o WhatsApp.");
       }
