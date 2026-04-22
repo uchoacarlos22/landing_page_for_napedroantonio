@@ -5,7 +5,6 @@ import { useInView } from "react-intersection-observer";
 import { breakpoints, colors } from "../theme";
 import whyUsImg from "../assets/images/why_us.jpg";
 
-
 // ============ STYLED COMPONENTS ============
 
 const FAQSection = styled.section.attrs(() => ({ id: "faq" }))`
@@ -212,23 +211,28 @@ const FAQAnswer = styled.div<{ open: boolean }>`
 const faqData = [
   {
     question: "Quais tipos de reformas vocês atendem?",
-    answer: "Atendemos desde pequenas reformas residenciais e comerciais até construções do zero, incluindo elétrica, hidráulica, pintura e acabamentos de alto padrão.",
+    answer:
+      "Atendemos desde pequenas reformas residenciais e comerciais até construções do zero, incluindo elétrica, hidráulica, pintura e acabamentos de alto padrão.",
   },
   {
     question: "Como funciona a solicitação de orçamento?",
-    answer: "É simples e gratuito! Você clica no botão de WhatsApp, nos envia os detalhes do projeto e agendamos uma visita técnica para avaliar o local e fornecer um orçamento preciso.",
+    answer:
+      "É simples e gratuito! Você clica no botão de WhatsApp, nos envia os detalhes do projeto e agendamos uma visita técnica para avaliar o local e fornecer um orçamento preciso.",
   },
   {
     question: "Vocês oferecem garantia nos serviços executados?",
-    answer: "Sim, todos os nossos serviços possuem garantia total de execução, seguindo rigorosamente as normas técnicas de segurança e qualidade.",
+    answer:
+      "Sim, todos os nossos serviços possuem garantia total de execução, seguindo rigorosamente as normas técnicas de segurança e qualidade.",
   },
   {
     question: "Qual é o prazo médio para conclusão de uma obra?",
-    answer: "O prazo depende da complexidade do projeto. Após a visita técnica, entregamos um cronograma detalhado para que você saiba exatamente quando cada etapa será concluída.",
+    answer:
+      "O prazo depende da complexidade do projeto. Após a visita técnica, entregamos um cronograma detalhado para que você saiba exatamente quando cada etapa será concluída.",
   },
   {
     question: "Vocês trabalham com fornecimento de materiais?",
-    answer: "Podemos trabalhar de ambas as formas: apenas com a mão de obra especializada ou com o pacote completo (material + mão de obra), facilitando a gestão da sua obra.",
+    answer:
+      "Podemos trabalhar de ambas as formas: apenas com a mão de obra especializada ou com o pacote completo (material + mão de obra), facilitando a gestão da sua obra.",
   },
 ];
 
@@ -258,11 +262,7 @@ export default function FAQ() {
             })}
           </FAQList>
           <ImageContent>
-            <MainImage
-              src={whyUsImg}
-              alt="Trabalhador da Construção"
-            />
-
+            <MainImage src={whyUsImg} alt="Trabalhador da Construção" />
 
             <StatsOverlay>
               <StatItem>
@@ -274,12 +274,11 @@ export default function FAQ() {
                 <StatLabel>Clientes</StatLabel>
               </StatItem>
               <StatItem>
-                <StatNumber>15+</StatNumber>
+                <StatNumber>28+</StatNumber>
                 <StatLabel>Anos</StatLabel>
               </StatItem>
             </StatsOverlay>
           </ImageContent>
-
         </Container>
       </FAQSection>
     </>
