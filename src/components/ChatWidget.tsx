@@ -37,7 +37,7 @@ const FloatingButton = styled.a`
 
 const ChatWidget: React.FC = () => {
   const whatsappNumber = "5511967796576";
-  const message = encodeURIComponent("Olá! Vi o site da NAPEDROANTONIO e gostaria de informações sobre construção e reformas.");
+  const message = encodeURIComponent("Olá, NPA! 👋 Vi o site de vocês e gostaria de solicitar um orçamento. Podem me atender?");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
   return (
@@ -46,6 +46,7 @@ const ChatWidget: React.FC = () => {
       target="_blank" 
       rel="noopener noreferrer"
       title="Falar no WhatsApp"
+      onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'chat_widget' })}
     >
       <MessageCircle size={32} />
     </FloatingButton>

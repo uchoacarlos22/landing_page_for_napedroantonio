@@ -401,7 +401,7 @@ const Header: React.FC = () => {
             </Address>
             <PhoneNumber>
               <WhatsAppButtonTop
-                href="https://wa.me/5511967796576?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas."
+                href="https://wa.me/5511967796576?text=Ol%C3%A1%2C%20NPA!%20Vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento.%20Podem%20me%20ajudar%3F"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'header' })}
