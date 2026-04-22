@@ -193,6 +193,7 @@ const Hero: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Abrir conversa no WhatsApp para consulta gratuita"
+          onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'hero' })}
         >
           <StyledWhatsAppIcon
             xmlns="http://www.w3.org/2000/svg"

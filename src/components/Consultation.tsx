@@ -211,6 +211,7 @@ const Consultation: React.FC = () => {
   };
 
   const handleWhatsAppDirect = () => {
+    window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'consultation_form' });
     const texto = `Olá! Meu nome é ${formData.nome}. Gostaria de solicitar uma consultoria sobre ${formData.servico || formData.assunto || 'serviços'}.\n\nDetalhes: ${formData.mensagem}`;
     const uri = `https://wa.me/5511967796576?text=${encodeURIComponent(texto)}`;
     window.open(uri, '_blank');

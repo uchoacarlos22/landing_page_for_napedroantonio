@@ -209,6 +209,7 @@ const Footer: React.FC = () => (
           href="https://wa.me/5511967796576?text=Olá!%20Gostaria%20de%20informações%20sobre%20construção%20e%20reformas." 
           target="_blank" 
           rel="noopener noreferrer"
+          onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'footer' })}
         >
           <FaWhatsapp size={8} />
           Falar no WhatsApp

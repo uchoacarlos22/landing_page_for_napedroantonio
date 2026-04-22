@@ -724,6 +724,7 @@ export default function AllServices() {
                   href={`https://wa.me/5511967796576?text=${waMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'services_modal' })}
                 >
                   💬 Solicitar Orçamento no WhatsApp
                 </WAButton>

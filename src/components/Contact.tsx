@@ -47,6 +47,7 @@ const Contact: React.FC = () => {
   };
 
   const handleWhatsAppRedirect = () => {
+    window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'contact_form' });
     const texto = `Olá! Meu nome é ${formData.name}. Gostaria de entrar em contato.\n\nE-mail: ${formData.email}\n\nMensagem: ${formData.message}`;
     const uri = `https://wa.me/5511967796576?text=${encodeURIComponent(texto)}`;
     window.open(uri, "_blank");
