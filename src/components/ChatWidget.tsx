@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MessageCircle } from 'lucide-react';
-import { colors } from '../theme';
+
 
 const FloatingButton = styled.a`
   position: fixed;
@@ -37,8 +37,9 @@ const FloatingButton = styled.a`
 
 const ChatWidget: React.FC = () => {
   const whatsappNumber = "5511967796576";
-  const message = encodeURIComponent("Olá, NPA! 👋 Vi o site de vocês e gostaria de solicitar um orçamento. Podem me atender?");
+  const message = encodeURIComponent("Olá! Gostaria de entender como vocês trabalham com projetos e orçamentos.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
 
   return (
     <FloatingButton 

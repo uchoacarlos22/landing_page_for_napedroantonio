@@ -6,7 +6,8 @@
 
     <!-- Prevenção de White Flash: Fundo escuro imediato -->
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         background-color: #1a2e4e !important;
@@ -14,7 +15,7 @@
         width: 100%;
         overflow-x: hidden;
       }
-      
+
       #root:empty {
         display: flex;
         flex-direction: column;
@@ -29,7 +30,7 @@
         flex-direction: column;
         align-items: center;
         gap: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
       .loader-text {
@@ -51,11 +52,18 @@
       }
 
       @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
       @keyframes pulse {
-        0%, 100% { opacity: 0.6; }
-        50% { opacity: 1; }
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
       }
 
       .skip-link {
@@ -68,36 +76,56 @@
         z-index: 100;
         transition: top 0.3s;
       }
-      .skip-link:focus { top: 0; }
+      .skip-link:focus {
+        top: 0;
+      }
     </style>
 
     <!-- SEO e Redes Sociais -->
-    <title>NPA — Construção e Reformas | Especialista no Morumbi & SP</title>
-    <meta name="description" content="Reformas residenciais e comerciais de alto padrão em São Paulo. Orçamento rápido via WhatsApp. Qualidade, prazo e confiança." />
+    <title>
+      NPA — Engenharia Construção e Energia | Especialista no Morumbi & SP
+    </title>
+    <meta
+      name="description"
+      content="Reformas residenciais e comerciais de alto padrão em São Paulo. Orçamento rápido via WhatsApp. Qualidade, prazo e confiança."
+    />
     <!-- Open Graph (Compartilhamento no WhatsApp/Instagram) -->
     <meta property="og:title" content="NPA — Construção e Reformas" />
-    <meta property="og:description" content="Reformas residenciais e comerciais de alto padrão em São Paulo. Orçamento rápido via WhatsApp." />
-    <meta property="og:url" content="https://landing-page-for-napedroantonio.vercel.app/" />
-    <link rel="canonical" href="https://landing-page-for-napedroantonio.vercel.app/" />
-    <meta property="og:image" content="/assets/og-image.jpg" />
+    <meta
+      property="og:description"
+      content="Reformas residenciais e comerciais de alto padrão em São Paulo. Orçamento rápido via WhatsApp."
+    />
+    <meta property="og:url" content="https://www.napedroantonio.com.br/" />
+    <link rel="canonical" href="https://www.napedroantonio.com.br/" />
+    <meta property="og:image" content="/og-image.jpg" />
     <meta property="og:type" content="website" />
 
     <!-- Google tag (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KEBEBT7ELM"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KEBEBT7ELM"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KEBEBT7ELM');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-KEBEBT7ELM");
     </script>
     <!-- End Google tag -->
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/src/assets/images/trator-icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/trator-icon.svg" />
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Performance -->
-    <link rel="preload" as="image" href="/assets/hero.webp" />
-
+    <link rel="preload" as="image" href="/hero.webp" fetchpriority="high" />
   </head>
 
   <body>

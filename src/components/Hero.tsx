@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { colors, breakpoints } from "../theme";
-import heroBg from "../assets/images/hero.png"; // ✅ Import da imagem
+import heroBg from "../assets/images/hero.webp"; // ✅ Import da imagem
 
 // === Hero Section Container ===
 const StyledHeroSection = styled.section`
@@ -11,15 +11,15 @@ const StyledHeroSection = styled.section`
   justify-content: center;
   text-align: center;
   color: ${colors.background};
-  max-height: 62vh; /* Ajustado para ocupar menos espaço */
+  min-height: 84vh; /* Ajustado para ocupar menos espaço (~15% reduzido) */
   overflow: hidden;
 
   @media (min-width: ${breakpoints.tabletMin}) {
-    height: 400px; /* Ajustado */
+    height: 340px; /* Ajustado (15% menor) */
   }
 
   @media (min-width: ${breakpoints.desktopMin}) {
-    height: 500px; /* Ajustado */
+    height: 425px; /* Ajustado (15% menor) */
   }
 `;
 
@@ -162,7 +162,7 @@ const Hero: React.FC = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     if (titleRef1.current) observer.observe(titleRef1.current);
@@ -181,19 +181,39 @@ const Hero: React.FC = () => {
       <StyledContentContainer>
         <StyledTitle>
           <StyledTitleLine1 ref={titleRef1}>
-            CONSTRUÍMOS SEUS
+            EMPRESA DE REFORMA E CONSTRUÇÃO
           </StyledTitleLine1>
           <StyledTitleLine2 ref={titleRef2}>
-            <StyledHighlightedText>SONHOS E SEU LAR</StyledHighlightedText>
+            <StyledHighlightedText>
+              RESIDENCIAL EM SÃO PAULO
+            </StyledHighlightedText>
           </StyledTitleLine2>
         </StyledTitle>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.9)",
+            fontSize: "1.2rem",
+            maxWidth: "800px",
+            marginTop: "20px",
+            marginBottom: "20px",
+            lineHeight: "1.6",
+          }}
+        >
+          Reformas de apartamentos, casas e obras novas no Morumbi e Grande SP.
+          Visita técnica gratuita, orçamento em 24h.
+        </p>
         <StyledFreeConsultationButton
           ref={buttonRef}
-          href="https://wa.me/5511967796576?text=Olá!%20Gostaria%20de%20solicitar%20uma%20consulta%20gratuita."
+          href="https://wa.me/5511967796576?text=Olá!%20Preciso%20de%20um%20orçamento%20para%20reforma%20residencial%20em%20[bairro/cidade]."
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir conversa no WhatsApp para consulta gratuita"
-          onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'hero' })}
+          aria-label="Abrir conversa no WhatsApp para falar com especialista"
+          onClick={() =>
+            window.gtag("event", "click_whatsapp", {
+              event_category: "contato",
+              event_label: "hero",
+            })
+          }
         >
           <StyledWhatsAppIcon
             xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +223,7 @@ const Hero: React.FC = () => {
             <path d="M20 16V6H4v10l4 4 4-4 4 4 4-4z"></path>
             <polyline points="4 10 10 14 20 6"></polyline>
           </StyledWhatsAppIcon>
-          CONSULTA GRATUITA
+          SOLICITAR VISITA TÉCNICA
         </StyledFreeConsultationButton>
       </StyledContentContainer>
     </StyledHeroSection>

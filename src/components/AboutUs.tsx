@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { breakpoints, colors } from "../theme";
-import aboutImage from "../assets/images/about_image.png";
+import aboutImage from "../assets/images/about_image.webp";
 
 const SectionWrapper = styled.div`
-  background: ${colors.primary};
+  background: #fff;
   padding: 60px 20px;
 `;
-
 
 const WelcomeContainer = styled.section.attrs(() => ({ id: "about" }))`
   width: 75%;
@@ -41,7 +40,7 @@ const LeftSection = styled.div`
 const WelcomeTitle = styled.h2`
   font-size: 2rem;
   font-weight: 800;
-  color: ${colors.primary};
+  color: ${colors.textPrimary};
   margin-bottom: 24px;
   line-height: 1.2;
 
@@ -121,42 +120,40 @@ const AboutUs: React.FC = () => {
   return (
     <SectionWrapper>
       <WelcomeContainer>
-      <LeftSection>
-        <WelcomeTitle>
-          <span>Bem vindo ao </span>
-          <br />
-          NaPedroAntonio
-          <br />
-          Construções e Reformas
-        </WelcomeTitle>
-        <WorkerImage
-          src={aboutImage}
-          alt="Profissional da Pedro Antonio Construções em obra"
-        />
-      </LeftSection>
+        <LeftSection>
+          <WelcomeTitle>
+            <span>Bem vindo a NPA</span>
+            <br />
+            Engenharia, Construções e Reformas
+          </WelcomeTitle>
+          <WorkerImage
+            src={aboutImage}
+            alt="Profissional da Pedro Antonio Construções em obra"
+          />
+        </LeftSection>
 
-      <RightSection>
-        <DescriptionText>
-          Somos especializados em{" "}
-          <strong>construção e reformas residenciais e comerciais</strong>,
-          unindo experiência, qualidade e compromisso. Nossa missão é
-          transformar projetos em realidade, com foco em{" "}
-          <strong>excelência, prazo e satisfação do cliente</strong>.
-          <br />
-          <br />
-          Com uma equipe qualificada e apaixonada pelo que faz, garantimos
-          resultados que superam expectativas — do planejamento à entrega final.
-        </DescriptionText>
+        <RightSection>
+          <DescriptionText>
+            Somos especializados em{" "}
+            <strong>construção e reformas residenciais e comerciais</strong>,
+            unindo experiência, qualidade e compromisso. Nossa missão é
+            transformar projetos em realidade, com foco em{" "}
+            <strong>excelência, prazo e satisfação do cliente</strong>.
+            <br />
+            <br />
+            Com uma equipe qualificada e apaixonada pelo que faz, garantimos
+            resultados que superam expectativas — do planejamento à entrega
+            final.
+          </DescriptionText>
 
-        <SignatureSection>
-          <SignatureName as="h3">Antonio Almeida</SignatureName>
-          <SignatureTitle as="p">Mestre de Obras e Fundador</SignatureTitle>
-        </SignatureSection>
-      </RightSection>
+          <SignatureSection>
+            <SignatureName as="h3">Antonio Almeida</SignatureName>
+            <SignatureTitle as="p">Mestre de Obras e Fundador</SignatureTitle>
+          </SignatureSection>
+        </RightSection>
       </WelcomeContainer>
     </SectionWrapper>
   );
 };
-
 
 export default AboutUs;

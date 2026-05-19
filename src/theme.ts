@@ -6,8 +6,8 @@ export const breakpoints = {
   desktopMin: "1024px",
 };
 export const colors = {
-  primary: "#1a2e4e",
-  secondary: "#daa520",
+  primary: "#051424",
+  secondary: "#f9c03d",
   background: "#ffffff",
   textPrimary: "#1a2e4e",
   textSecondary: "#808080",

@@ -1,13 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const MapSection = styled.section`
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
-  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 `;
 
 const MapIframe = styled.iframe`
@@ -36,12 +33,7 @@ const MapSectionComponent: React.FC<MapSectionProps> = ({ address }) => {
 
   return (
     <MapSection>
-      <MapIframe
-        title="Nosso Local"
-        src={src}
-        allowFullScreen
-        loading="lazy"
-      />
+      <MapIframe title="Nosso Local" src={src} allowFullScreen loading="lazy" />
     </MapSection>
   );
 };

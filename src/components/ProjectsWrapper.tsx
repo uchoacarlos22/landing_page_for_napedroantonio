@@ -36,7 +36,9 @@ const TextCard = styled.div`
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);

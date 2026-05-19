@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-scroll";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { MapPin, Phone, Menu, X, ChevronDown } from "lucide-react";
 import { breakpoints, colors } from "../theme";
-import logo from "../assets/images/npa_logo_sf.png";
+import logo from "../assets/images/npa_logo_sf.webp";
 
 // === keyframe para slide in da esquerda ===
 const slideIn = keyframes`
@@ -26,7 +26,7 @@ const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   z-index: 100;
-  height: 60px;
+  max-height: 50px !important;
 
   @media (max-width: ${breakpoints.tabletMax}) {
     width: 100%;
@@ -89,21 +89,6 @@ const WhatsAppButtonTop = styled.a`
   }
 `;
 
-const SocialIcons = styled.div`
-  display: flex;
-`;
-
-const SocialLink = styled.a`
-  color: ${colors.background};
-  margin-left: 10px;
-
-  &:hover,
-  &:focus {
-    color: ${colors.secondary};
-    outline: none;
-  }
-`;
-
 const NavigationBar = styled.nav<{ $isScrolled: boolean }>`
   position: fixed;
   top: ${(p) => (p.$isScrolled ? "0px" : "44px")};
@@ -136,7 +121,7 @@ const NavigationContent = styled.div`
   position: relative;
 `;
 
-const Logo = styled(Link)`
+const Logo = styled(RouterLink)`
   display: flex;
   align-items: center;
   color: ${colors.primary};
@@ -144,10 +129,10 @@ const Logo = styled(Link)`
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
+  border: 2px solid red;
 
   img {
     width: 100px;
-    height: auto; /* ✅ mantém proporção */
     margin-left: 10px;
     padding-top: 20px;
   }
@@ -311,11 +296,42 @@ const DropdownItem = styled.a`
   }
 `;
 
+interface NavSection {
+  name: string;
+  id: string;
+  to?: string;
+  subItems?: { name: string; id: string }[];
+}
+
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuIconRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavClick = (id: string, to?: string) => {
+    setIsMenuOpen(false);
+    if (to) {
+      navigate(to);
+      return;
+    }
+
+    // Se estivermos na página correta para o ID, apenas scrolla
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Se não, tenta navegar para a página "base" do contexto antes de scrollar (com hash)
+      // Nota: O clique direto em NavLink com 'to' já lida com navegação entre páginas.
+      // Aqui lidamos com o caso de links internos que precisam de navegação cross-page.
+      if (location.pathname === "/" || location.pathname === "/residencial") {
+        const target = `/residencial#${id}`;
+        navigate(target);
+      }
+    }
+  };
 
   useEffect(() => {
     let ticking = false;
@@ -329,7 +345,7 @@ const Header: React.FC = () => {
             (e.target as HTMLElement)?.scrollTop ||
             0;
 
-          const shouldBeScrolled = scrollTop > 40; // 🔥 ajuste fino aqui
+          const shouldBeScrolled = scrollTop > 40;
 
           setIsScrolled((prev) =>
             prev !== shouldBeScrolled ? shouldBeScrolled : prev,
@@ -367,24 +383,71 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  const sections = [
-    { name: "Home", id: "hero" },
-    { name: "Sobre", id: "about" },
-    {
-      name: "Serviços",
-      id: "services",
-      subItems: [
-        { name: "Destaques", id: "services" },
-        { name: "Catálogo Completo", id: "all-services" },
-      ],
-    },
-    { name: "Projetos", id: "projects" },
-    { name: "Consultoria", id: "consultation" },
-    { name: "FAQ", id: "faq" },
-    { name: "Depoimentos", id: "testimonials" },
-  ];
+  const getSections = () => {
+    const path = location.pathname;
+
+    // 1. Contexto Steering (Home) - SEM MENU
+    if (path === "/") {
+      return [];
+    }
+
+    // 2. Contexto B2B (/empresas)
+    if (path === "/empresas") {
+      return [
+        { name: "Diferenciais", id: "pain" },
+        { name: "Processo", id: "process" },
+        { name: "ROI", id: "comparison" },
+        { name: "Consultoria", id: "consultation" },
+      ];
+    }
+
+    // 3. Contexto Solar
+    if (path.startsWith("/energia-solar")) {
+      return [
+        { name: "Vantagens", id: "benefits" },
+        { name: "Projetos", id: "projects" },
+        {
+          name: "Mobilidade",
+          id: "mobilidade",
+          to: "/energia-solar/mobilidade",
+        },
+        { name: "Orçamento", id: "consultation" },
+      ];
+    }
+
+    // 4. Contexto Residencial (Padrão)
+    return [
+      { name: "Sobre", id: "about" },
+      { name: "Serviços", id: "services" },
+      { name: "Projetos", id: "projects" },
+      { name: "Consultoria", id: "consultation" },
+      { name: "FAQ", id: "faq" },
+      { name: "Depoimentos", id: "testimonials" },
+    ];
+  };
+
+  const sections = getSections();
 
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const getWhatsAppURL = () => {
+    const base = "https://wa.me/5511967796576?text=";
+    let message =
+      "Olá! Gostaria de entender como vocês trabalham com projetos e orçamentos.";
+
+    if (location.pathname === "/empresas") {
+      message =
+        "Olá! Gostaria de uma consultoria B2B estratégica para minha empresa. Foco em ROI e prazos.";
+    } else if (location.pathname.startsWith("/energia-solar")) {
+      message =
+        "Olá! Tenho interesse em energia solar para reduzir meus custos. Gostaria de um orçamento.";
+    } else if (location.pathname === "/residencial") {
+      message =
+        "Olá! Gostaria de um orçamento para construção ou reforma residencial.";
+    }
+
+    return `${base}${encodeURIComponent(message)}`;
+  };
 
   return (
     <HeaderContainer>
@@ -401,10 +464,15 @@ const Header: React.FC = () => {
             </Address>
             <PhoneNumber>
               <WhatsAppButtonTop
-                href="https://wa.me/5511967796576?text=Ol%C3%A1%2C%20NPA!%20Vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento.%20Podem%20me%20ajudar%3F"
+                href={getWhatsAppURL()}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'header' })}
+                onClick={() =>
+                  window.gtag("event", "click_whatsapp", {
+                    event_category: "contato",
+                    event_label: "header",
+                  })
+                }
               >
                 <Phone
                   size={14}
@@ -434,17 +502,12 @@ const Header: React.FC = () => {
 
       <NavigationBar $isScrolled={isScrolled}>
         <NavigationContent>
-          <Logo
-            to="hero"
-            smooth={true}
-            duration={500}
-            aria-label="Ir para seção inicial"
-          >
+          <Logo to="/" aria-label="Ir para seção inicial">
             <img src={logo} alt="Logo da empresa NAPEDROANTONIO" />
           </Logo>
 
           <NavLinks ref={menuRef} $isMenuOpen={isMenuOpen}>
-            {sections.map((sec, i) =>
+            {sections.map((sec: NavSection, i) =>
               sec.subItems ? (
                 <DropdownContainer
                   key={sec.id}
@@ -487,10 +550,7 @@ const Header: React.FC = () => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          document
-                            .getElementById(sub.id)
-                            ?.scrollIntoView({ behavior: "smooth" });
-                          setIsMenuOpen(false);
+                          handleNavClick(sub.id);
                           setActiveDropdown(null);
                         }}
                       >
@@ -505,10 +565,12 @@ const Header: React.FC = () => {
                   href=""
                   onClick={(e) => {
                     e.preventDefault();
-                    document
-                      .getElementById(sec.id)
-                      ?.scrollIntoView({ behavior: "smooth" });
-                    setIsMenuOpen(false);
+                    if (sec.to) {
+                      navigate(sec.to);
+                      setIsMenuOpen(false);
+                    } else {
+                      handleNavClick(sec.id);
+                    }
                   }}
                   delay={i * 0.1}
                 >
@@ -518,14 +580,16 @@ const Header: React.FC = () => {
             )}
           </NavLinks>
 
-          <MenuIcon
-            ref={menuIconRef}
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            aria-label="Abrir ou fechar menu de navegação"
-            aria-expanded={isMenuOpen}
-          >
-            {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
-          </MenuIcon>
+          {sections.length > 0 && (
+            <MenuIcon
+              ref={menuIconRef}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-label="Abrir ou fechar menu de navegação"
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            </MenuIcon>
+          )}
         </NavigationContent>
       </NavigationBar>
     </HeaderContainer>

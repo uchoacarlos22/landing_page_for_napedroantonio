@@ -1,67 +1,55 @@
-import React, { useState, useEffect } from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Features from "./components/Features";
-import AboutUs from "./components/AboutUs";
-import FAQ from "./components/FAQ";
-import Consultation from "./components/Consultation";
-import Testimonials from "./components/Testimonials";
-import MapSectionComponent from "./components/MapSectionComponent";
-import Footer from "./components/Footer";
-import ProjectsWrapper from "./components/ProjectsWrapper";
-import AllServices from "./components/AllServices";
-import ChatWidget from "./components/ChatWidget";
-import { LampDemo } from "./components/Lamp";
-import { AnimatePresence, motion } from "framer-motion";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import SolarLayout from "./layouts/SolarLayout";
+import ScrollToTop from "./components/ScrollToTop";
+const HomePage = lazy(() => import("./pages/HomePage"));
+const ResidencialPage = lazy(() => import("./pages/ResidencialPage"));
+const EmpresasPage = lazy(() => import("./pages/EmpresasPage"));
 
+// Lazy-load the solar sub-pages for performance
+const SolarPage = lazy(() => import("./pages/energia-solar/SolarPage"));
+const SolarEmpresasPage = lazy(() => import("./pages/energia-solar/SolarEmpresasPage"));
+const CondominiosPage = lazy(() => import("./pages/energia-solar/CondominiosPage"));
+const MobilidadePage = lazy(() => import("./pages/energia-solar/MobilidadePage"));
+const SolarResidencialPage = lazy(() => import("./pages/energia-solar/SolarResidencialPage"));
+
+// ─── App with routing ─────────────────────────────────────────────────────
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="App overflow-x-hidden min-h-screen bg-slate-950">
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <motion.div
-            key="loader"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          >
-            <LampDemo />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <Header />
-            <Hero />
-            <Features />
-            <AboutUs />
-            <Services />
-            <AllServices />
-            <ProjectsWrapper />
-            <Consultation />
-            <FAQ />
-            <Testimonials />
-            <MapSectionComponent address="Construção e reforma no Morumbi NapedroAntonio" />
-            <Footer />
-            <ChatWidget />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <BrowserRouter>
+      <ScrollToTop />
+      <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center"><div className="text-white text-xl">Carregando...</div></div>}>
+        <Routes>
+          {/* Main Entry — Steering Page */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* Construction Routes wrapped in MainLayout */}
+          <Route element={<MainLayout />}>
+            <Route path="/residencial" element={<ResidencialPage />} />
+            <Route path="/empresas" element={<EmpresasPage />} />
+          </Route>
+
+          {/* Energia Solar sub-pages wrapped in SolarLayout */}
+          <Route element={<SolarLayout />}>
+            <Route path="/energia-solar" element={<SolarPage />} />
+            <Route path="/energia-solar/residencial" element={<SolarResidencialPage />} />
+            <Route path="/energia-solar/empresas" element={<SolarEmpresasPage />} />
+            <Route path="/energia-solar/condominios" element={<CondominiosPage />} />
+            <Route path="/energia-solar/mobilidade-eletrica" element={<MobilidadePage />} />
+          </Route>
+
+          {/* Legacy route redirection */}
+          <Route path="/energia-solar/mobilidade" element={<Navigate to="/energia-solar/mobilidade-eletrica" replace />} />
+
+          {/* Catch-all → home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+

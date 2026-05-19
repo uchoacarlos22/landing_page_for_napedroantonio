@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useInView } from "react-intersection-observer";
 import { breakpoints, colors } from "../theme";
-import whyUsImg from "../assets/images/why_us.jpg";
+import whyUsImg from "../assets/images/why_us.webp";
 
 // ============ STYLED COMPONENTS ============
 
 const FAQSection = styled.section.attrs(() => ({ id: "faq" }))`
   position: relative;
-  background-color: ${colors.background};
   display: flex;
+  flex-direction: column;
+  background-color: #fff;
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -42,10 +43,10 @@ const Container = styled.div`
 `;
 
 const FAQTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 10px;
   color: ${colors.secondary};
-  padding: 0.5rem;
   letter-spacing: 2px;
   text-align: center;
   /* tablet */
@@ -194,7 +195,7 @@ const FAQAnswer = styled.div<{ open: boolean }>`
   opacity: ${(p) => (p.open ? 1 : 0)};
   padding: ${(p) => (p.open ? "1rem 1.5rem" : "0 1.5rem")};
   background: ${colors.primary}4D;
-  color: ${colors.background};
+  color: ${colors.secondary};
   font-size: 1.2rem;
   line-height: 1.6;
   overflow: hidden;
@@ -242,8 +243,8 @@ export default function FAQ() {
 
   return (
     <>
-      <FAQTitle>Perguntas Frequentes</FAQTitle>
       <FAQSection ref={ref}>
+        <FAQTitle>Perguntas Frequentes</FAQTitle>
         <Container>
           <FAQList>
             {faqData.map((item, idx) => {

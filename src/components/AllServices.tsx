@@ -4,25 +4,25 @@ import styled, { keyframes, css } from "styled-components";
 import { colors, breakpoints } from "../theme";
 
 // ============ IMAGE IMPORTS ============
-import imgBanheiro from "../assets/images/services/srv-banheiro.jpeg";
-import imgCozinha from "../assets/images/services/srv-cozinha.jpeg";
-import imgSala from "../assets/images/services/srv-sala.jpeg";
-import imgQuintal from "../assets/images/services/srv.quintal.png";
-import imgFachada from "../assets/images/services/srv-fachada.jpeg";
-import imgEletrica from "../assets/images/services/srv-eletrica.jpeg";
-import imgHidraulica from "../assets/images/services/srv-hidraulica.png";
-import imgPintura from "../assets/images/services/srv-pintura.jpeg";
-import imgDrywall from "../assets/images/services/srv-drywall.jpeg";
-import imgImperm from "../assets/images/services/srv-impermeabilizaca.jpeg";
-import imgPisos from "../assets/images/services/srv-pisos.jpeg";
-import imgPequeOb from "../assets/images/services/srv-pequenas-obras.jpeg";
-import imgManutencao from "../assets/images/services/srv-manutencao.jpeg";
-import imgReparos from "../assets/images/services/srv-reparos.jpeg";
-import imgComercial from "../assets/images/services/srv-comercial.jpeg";
-import imgGerenciamento from "../assets/images/services/srv-gerenciamento.jpeg";
-import imgPaisagismo from "../assets/images/services/srv-paisagismo.jpeg";
-import imgMoveis from "../assets/images/services/srv-moveis.jpeg";
-import imgVidracaria from "../assets/images/services/srv-vidracaria.jpeg";
+import imgBanheiro from "../assets/images/services/srv-banheiro.webp";
+import imgCozinha from "../assets/images/services/srv-cozinha.webp";
+import imgSala from "../assets/images/services/srv-sala.webp";
+import imgQuintal from "../assets/images/services/srv.quintal.webp";
+import imgFachada from "../assets/images/services/srv-fachada.webp";
+import imgEletrica from "../assets/images/services/srv-eletrica.webp";
+import imgHidraulica from "../assets/images/services/srv-hidraulica.webp";
+import imgPintura from "../assets/images/services/srv-pintura.webp";
+import imgDrywall from "../assets/images/services/srv-drywall.webp";
+import imgImperm from "../assets/images/services/srv-impermeabilizaca.webp";
+import imgPisos from "../assets/images/services/srv-pisos.webp";
+import imgPequeOb from "../assets/images/services/srv-pequenas-obras.webp";
+import imgManutencao from "../assets/images/services/srv-manutencao.webp";
+import imgReparos from "../assets/images/services/srv-reparos.webp";
+import imgComercial from "../assets/images/services/srv-comercial.webp";
+import imgGerenciamento from "../assets/images/services/srv-gerenciamento.webp";
+import imgPaisagismo from "../assets/images/services/srv-paisagismo.webp";
+import imgMoveis from "../assets/images/services/srv-moveis.webp";
+import imgVidracaria from "../assets/images/services/srv-vidracaria.webp";
 
 // ============ DATA ============
 
@@ -387,51 +387,73 @@ const modalIn = keyframes`
 
 const SectionWrapper = styled.section`
   background: ${colors.primary};
-  padding: 70px 20px 80px;
+  border: 3px solid ${colors.secondary};
+  padding: 48px 16px 60px;
   text-align: center;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    padding: 60px 20px 70px;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    padding: 70px 20px 80px;
+  }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: ${colors.secondary};
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 8px;
-  @media (max-width: ${breakpoints.mobileMax}) {
-    font-size: 1.5rem;
+  margin-bottom: 6px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    font-size: 2rem;
+    margin-bottom: 8px;
   }
 `;
 
 const SectionSubtitle = styled.p`
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
-  margin-bottom: 40px;
+  font-size: 0.85rem;
+  margin-bottom: 28px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.95rem;
+    margin-bottom: 36px;
+  }
 `;
 
 /* ---- TABS ---- */
 const TabBar = styled.div`
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    gap: 8px;
+    margin-bottom: 36px;
+  }
 `;
 
 const Tab = styled.button<{ $active: boolean }>`
-  padding: 10px 24px;
-  border-radius: 30px;
-
+  padding: 8px 16px;
+  border-radius: 24px;
   border: 1.5px solid
     ${(p) => (p.$active ? colors.secondary : "rgba(255,255,255,0.2)")};
   background: ${(p) => (p.$active ? colors.secondary : "transparent")};
   color: ${(p) => (p.$active ? colors.primary : "rgba(255,255,255,0.8)")};
   font-weight: ${(p) => (p.$active ? "700" : "500")};
-
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   cursor: pointer;
   transition: all 0.22s ease;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -441,73 +463,132 @@ const Tab = styled.button<{ $active: boolean }>`
     border-color: ${colors.secondary};
     color: ${(p) => (p.$active ? colors.primary : colors.secondary)};
   }
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    border-radius: 30px;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    padding: 10px 24px;
+    font-size: 0.88rem;
+  }
 `;
 
 const TabDesc = styled.span`
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 400;
   opacity: 0.75;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.65rem;
+  }
 `;
 
 /* ---- GRID ---- */
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  max-width: 1000px;
-  margin: 0 auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
   animation: ${fadeInUp} 0.35s ease both;
-  @media (max-width: ${breakpoints.tabletMax}) {
-    grid-template-columns: repeat(3, 1fr);
+
+  @media (min-width: 480px) {
+    gap: 12px;
+    padding: 0 12px;
   }
-  @media (max-width: ${breakpoints.mobileMax}) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 0 16px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+    padding: 0;
   }
 `;
 
 const Card = styled.button`
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 18px 10px 14px;
+  border-radius: 12px;
+  padding: 14px 8px 12px;
   cursor: pointer;
   transition: all 0.22s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-align: center;
+
   &:hover {
     background: rgba(218, 165, 32, 0.1);
     border-color: ${colors.secondary};
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
   }
+
+  @media (min-width: 480px) {
+    padding: 16px 10px 14px;
+    gap: 10px;
+    border-radius: 14px;
+  }
 `;
 
 const Avatar = styled.img`
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(218, 165, 32, 0.4);
   transition: border-color 0.2s ease;
+
   ${Card}:hover & {
     border-color: ${colors.secondary};
+  }
+
+  @media (min-width: 480px) {
+    width: 58px;
+    height: 58px;
+  }
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    width: 64px;
+    height: 64px;
   }
 `;
 
 const CardTitle = styled.span`
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: ${colors.secondary};
   line-height: 1.3;
+
+  @media (min-width: 480px) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${breakpoints.desktopMin}) {
+    font-size: 0.78rem;
+  }
 `;
 
 const CardHint = styled.span`
-  font-size: 0.67rem;
+  font-size: 0.6rem;
   color: rgba(255, 255, 255, 0.4);
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.67rem;
+  }
 `;
 
 /* ---- MODAL ---- */
@@ -517,124 +598,179 @@ const Overlay = styled.div<{ open: boolean }>`
   background: rgba(0, 0, 0, 0.7);
   z-index: 2000;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 20px;
+  padding: 0;
   opacity: ${(p) => (p.open ? 1 : 0)};
   pointer-events: ${(p) => (p.open ? "all" : "none")};
   transition: opacity 0.25s ease;
   backdrop-filter: blur(4px);
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    align-items: center;
+    padding: 20px;
+  }
 `;
 
 const ModalBox = styled.div<{ open: boolean }>`
   background: white;
-  border-radius: 18px;
-  max-width: 520px;
+  border-radius: 18px 18px 0 0;
   width: 100%;
-  max-height: 88vh;
+  max-width: 520px;
+  max-height: 90vh;
   overflow-y: auto;
   position: relative;
+
   ${(p) =>
     p.open &&
     css`
       animation: ${modalIn} 0.3s ease both;
     `}
-  @media (max-width: ${breakpoints.mobileMax}) {
-    border-radius: 14px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    border-radius: 18px;
+    max-height: 88vh;
   }
 `;
 
 const ModalImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
   border-radius: 18px 18px 0 0;
   display: block;
-  @media (max-width: ${breakpoints.mobileMax}) {
-    height: 160px;
-    border-radius: 14px 14px 0 0;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    height: 200px;
   }
 `;
 
 const ModalBody = styled.div`
-  padding: 28px 30px 24px;
-  @media (max-width: ${breakpoints.mobileMax}) {
-    padding: 20px 18px;
+  padding: 20px 18px 24px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    padding: 28px 30px 24px;
   }
 `;
 
 const ModalClose = styled.button`
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   background: rgba(0, 0, 0, 0.45);
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 0.95rem;
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
   cursor: pointer;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
+
   &:hover {
     background: rgba(0, 0, 0, 0.65);
+  }
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
   }
 `;
 
 const ModalBadge = styled.span`
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: ${colors.secondary};
   background: ${colors.secondary}18;
-  padding: 3px 12px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 16px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    padding: 3px 12px;
+    border-radius: 20px;
+  }
 `;
 
 const ModalTitle = styled.h3`
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: ${colors.primary};
-  margin: 12px 0 8px;
+  margin: 10px 0 6px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 1.4rem;
+    margin: 12px 0 8px;
+  }
 `;
 
 const ModalDesc = styled.p`
   color: #555;
-  line-height: 1.7;
-  font-size: 0.92rem;
-  margin-bottom: 18px;
+  line-height: 1.6;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
 `;
 
 const BenefitList = styled.ul`
   list-style: none;
   padding: 0;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    gap: 7px;
+    margin-bottom: 24px;
+  }
 `;
 
 const BenefitItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.88rem;
+  gap: 8px;
+  font-size: 0.82rem;
   color: #333;
+
   &::before {
     content: "✓";
     color: ${colors.secondary};
     font-weight: 900;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     background: ${colors.secondary}15;
     border-radius: 50%;
-    min-width: 22px;
-    height: 22px;
+    min-width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    gap: 10px;
+    font-size: 0.88rem;
+
+    &::before {
+      font-size: 0.8rem;
+      min-width: 22px;
+      height: 22px;
+    }
   }
 `;
 
@@ -646,13 +782,21 @@ const WAButton = styled.a`
   background: #25d366;
   color: white;
   font-weight: 700;
-  font-size: 0.95rem;
-  padding: 13px 20px;
+  font-size: 0.88rem;
+  padding: 12px 16px;
   border-radius: 10px;
   text-decoration: none;
   transition: background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+
   &:hover {
     background: #1fba59;
+  }
+
+  @media (min-width: ${breakpoints.tabletMin}) {
+    font-size: 0.95rem;
+    padding: 13px 20px;
   }
 `;
 
@@ -724,7 +868,12 @@ export default function AllServices() {
                   href={`https://wa.me/5511967796576?text=${waMsg}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'services_modal' })}
+                  onClick={() =>
+                    window.gtag("event", "click_whatsapp", {
+                      event_category: "contato",
+                      event_label: "services_modal",
+                    })
+                  }
                 >
                   💬 Solicitar Orçamento no WhatsApp
                 </WAButton>

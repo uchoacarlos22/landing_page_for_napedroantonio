@@ -38,7 +38,9 @@ const StyledFeatureItem = styled.article`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 
   &:hover {
     transform: translateY(-6px);
@@ -62,7 +64,7 @@ const StyledFeatureIcon = styled.img`
 `;
 
 const StyledFeatureTitle = styled.h3`
-  color: ${colors.background};
+  color: ${colors.secondary};
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -83,22 +85,26 @@ const Features: React.FC = () => {
     {
       icon: icon1,
       title: "EQUIPE ESPECIALIZADA E EXPERIENTE",
-      description: "Profissionais experientes que constroem com qualidade e compromisso.",
+      description:
+        "Profissionais experientes que constroem com qualidade e compromisso.",
     },
     {
       icon: icon2,
       title: "REFORMAS E CONSTRUÇÕES SOB MEDIDA",
-      description: "Desenvolvemos projetos personalizados para atender com excelência.",
+      description:
+        "Desenvolvemos projetos personalizados para atender com excelência.",
     },
     {
       icon: icon3,
       title: "QUALIDADE EM CADA DETALHE",
-      description: "Usamos os melhores materiais e técnicas para garantir durabilidade e beleza.",
+      description:
+        "Usamos os melhores materiais e técnicas para garantir durabilidade e beleza.",
     },
     {
       icon: icon4,
       title: "SUPORTE DO COMEÇO AO FIM",
-      description: "Acompanhamos todas as etapas para que você tenha uma experiência tranquila.",
+      description:
+        "Acompanhamos todas as etapas para que você tenha uma experiência tranquila.",
     },
   ];
 
@@ -108,7 +114,9 @@ const Features: React.FC = () => {
         <StyledFeatureItem key={index}>
           <StyledFeatureIcon src={item.icon} alt={item.title} />
           <StyledFeatureTitle>{item.title}</StyledFeatureTitle>
-          <StyledFeatureDescription>{item.description}</StyledFeatureDescription>
+          <StyledFeatureDescription>
+            {item.description}
+          </StyledFeatureDescription>
         </StyledFeatureItem>
       ))}
     </StyledFeaturesSection>

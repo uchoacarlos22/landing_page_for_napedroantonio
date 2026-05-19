@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import styled, { css } from 'styled-components';
-import { colors } from '../theme';
+import { useState, useEffect, useRef } from "react";
+import styled, { css } from "styled-components";
+import { colors } from "../theme";
 
-const TestimonialsContainer = styled.div.attrs(() => ({ id: 'testimonials' }))`
+const TestimonialsContainer = styled.div.attrs(() => ({ id: "testimonials" }))`
   margin: 0 auto;
   background: ${colors.background};
-  border-radius: 10px;
   padding: 50px 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
     padding: 30px 20px;
@@ -18,7 +16,7 @@ const TestimonialsTitle = styled.h2`
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
-  color: ${colors.primary};
+  color: ${colors.secondary};
   margin-bottom: 50px;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -57,7 +55,6 @@ const TestimonialSlide = styled.div`
     align-items: center;
   }
 `;
-
 
 const TestimonialCard = styled.div`
   flex: 1;
@@ -119,7 +116,7 @@ const Star = styled.span<{ empty?: boolean }>`
   color: ${colors.secondary};
   font-size: 1.2rem;
 
-  ${props =>
+  ${(props) =>
     props.empty &&
     css`
       color: ${colors.border};
@@ -136,7 +133,13 @@ const TestimonialText = styled.div`
 const TestimonialDivider = styled.div`
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, ${colors.secondary} 0%, ${colors.secondary} 70%, ${colors.border} 70%, ${colors.border} 100%);
+  background: linear-gradient(
+    90deg,
+    ${colors.secondary} 0%,
+    ${colors.secondary} 70%,
+    ${colors.border} 70%,
+    ${colors.border} 100%
+  );
   margin-top: 20px;
   border-radius: 2px;
 `;
@@ -160,7 +163,7 @@ const Dot = styled.div<{ $active?: boolean }>`
     background: ${colors.secondary}BF;
   }
 
-  ${props =>
+  ${(props) =>
     props.$active &&
     css`
       background: ${colors.secondary};
@@ -190,14 +193,14 @@ const Testimonials = () => {
 
     startAutoSlide();
 
-    const container = document.querySelector('.testimonials-container');
-    container?.addEventListener('mouseenter', stopAutoSlide);
-    container?.addEventListener('mouseleave', startAutoSlide);
+    const container = document.querySelector(".testimonials-container");
+    container?.addEventListener("mouseenter", stopAutoSlide);
+    container?.addEventListener("mouseleave", startAutoSlide);
 
     return () => {
       stopAutoSlide();
-      container?.removeEventListener('mouseenter', stopAutoSlide);
-      container?.removeEventListener('mouseleave', startAutoSlide);
+      container?.removeEventListener("mouseenter", stopAutoSlide);
+      container?.removeEventListener("mouseleave", startAutoSlide);
     };
   }, [totalSlides]);
 
@@ -210,7 +213,9 @@ const Testimonials = () => {
       <TestimonialsTitle>DEPOIMENTOS</TestimonialsTitle>
 
       <TestimonialsSlider>
-        <TestimonialsTrack style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+        <TestimonialsTrack
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
           {/* Slide 1 */}
           <TestimonialSlide>
             <TestimonialCard>
@@ -221,11 +226,16 @@ const Testimonials = () => {
                 />
                 <TestimonialName>João Ribeiro</TestimonialName>
                 <TestimonialRating>
-                  {[...Array(5)].map((_, i) => <Star key={i}>★</Star>)}
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i}>★</Star>
+                  ))}
                 </TestimonialRating>
               </TestimonialHeader>
               <TestimonialText>
-                O atendimento foi excelente do início ao fim. O Pedro me passou segurança e cumpriu exatamente o que foi combinado. A reforma do meu banheiro ficou impecável e dentro do prazo. Recomendo de olhos fechados!
+                O atendimento foi excelente do início ao fim. O Pedro me passou
+                segurança e cumpriu exatamente o que foi combinado. A reforma do
+                meu banheiro ficou impecável e dentro do prazo. Recomendo de
+                olhos fechados!
               </TestimonialText>
               <TestimonialDivider />
             </TestimonialCard>
@@ -241,11 +251,16 @@ const Testimonials = () => {
                 />
                 <TestimonialName>Luiz Santos</TestimonialName>
                 <TestimonialRating>
-                  {[...Array(5)].map((_, i) => <Star key={i}>★</Star>)}
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i}>★</Star>
+                  ))}
                 </TestimonialRating>
               </TestimonialHeader>
               <TestimonialText>
-                Já tinha tido muita dor de cabeça com serviços mal feitos. Mas com o Pedro foi diferente. Pontual, caprichoso e super transparente. Agora sempre que preciso de manutenção em casa, sei exatamente quem chamar.
+                Já tinha tido muita dor de cabeça com serviços mal feitos. Mas
+                com o Pedro foi diferente. Pontual, caprichoso e super
+                transparente. Agora sempre que preciso de manutenção em casa,
+                sei exatamente quem chamar.
               </TestimonialText>
               <TestimonialDivider />
             </TestimonialCard>
@@ -261,11 +276,15 @@ const Testimonials = () => {
                 />
                 <TestimonialName>Maria Oliveira</TestimonialName>
                 <TestimonialRating>
-                  {[...Array(5)].map((_, i) => <Star key={i}>★</Star>)}
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i}>★</Star>
+                  ))}
                 </TestimonialRating>
               </TestimonialHeader>
               <TestimonialText>
-                Fiquei muito satisfeita com o resultado final! Além do trabalho ter ficado ótimo, a organização e limpeza durante o processo me surpreenderam. Foi um alívio contratar alguém tão profissional.
+                Fiquei muito satisfeita com o resultado final! Além do trabalho
+                ter ficado ótimo, a organização e limpeza durante o processo me
+                surpreenderam. Foi um alívio contratar alguém tão profissional.
               </TestimonialText>
               <TestimonialDivider />
             </TestimonialCard>
@@ -281,11 +300,16 @@ const Testimonials = () => {
                 />
                 <TestimonialName>Ana Souza</TestimonialName>
                 <TestimonialRating>
-                  {[...Array(5)].map((_, i) => <Star key={i}>★</Star>)}
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i}>★</Star>
+                  ))}
                 </TestimonialRating>
               </TestimonialHeader>
               <TestimonialText>
-                Contratei para trocar o piso da cozinha e acabei pedindo mais serviços de tão bom que foi. Um profissional honesto, educado e com atenção aos detalhes. Me senti respeitada e valorizada como cliente.
+                Contratei para trocar o piso da cozinha e acabei pedindo mais
+                serviços de tão bom que foi. Um profissional honesto, educado e
+                com atenção aos detalhes. Me senti respeitada e valorizada como
+                cliente.
               </TestimonialText>
               <TestimonialDivider />
             </TestimonialCard>
@@ -295,7 +319,11 @@ const Testimonials = () => {
 
       <NavigationDots>
         {[...Array(totalSlides)].map((_, i) => (
-          <Dot key={i} $active={currentSlide === i} onClick={() => goToSlide(i)} />
+          <Dot
+            key={i}
+            $active={currentSlide === i}
+            onClick={() => goToSlide(i)}
+          />
         ))}
       </NavigationDots>
     </TestimonialsContainer>

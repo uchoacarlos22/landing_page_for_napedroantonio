@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { colors } from "../theme";
 import { FaGlobe, FaWhatsapp } from "react-icons/fa";
 import TratorIcon from "../assets/images/trator-icon.svg";
-import footerImg from "../assets/images/footer.jpg";
+import footerImg from "../assets/images/footer.webp";
 
 const FooterContainer = styled.footer`
   position: relative;
@@ -163,78 +163,115 @@ const WAButtonFooter = styled.a`
   }
 `;
 
-const Footer: React.FC = () => (
-  <FooterContainer>
-    <FooterInner>
-      {/* Sobre Nós */}
-      <Column>
-        <Heading>Sobre Nós</Heading>
-        <LogoContainer>
-          <img src={TratorIcon} alt="Ícone Trator" /> Construído
-        </LogoContainer>
-        <Text>
-          Conte com a nossa experiência e dedicação para construir ou renovar o seu espaço. Transformamos seus sonhos em realidade com qualidade e segurança.
-        </Text>
-      </Column>
+import { useLocation, useNavigate } from "react-router-dom";
 
-      {/* Links da Empresa */}
-      <Column>
-        <Heading>Links da Empresa</Heading>
-        <LinkList>
-          <LinkItem>
-            <a href="#home">Home</a>
-          </LinkItem>
-          <LinkItem>
-            <a href="#services">Serviços</a>
-          </LinkItem>
-          <LinkItem>
-            <a href="#testimonials">Depoimentos</a>
-          </LinkItem>
-          <LinkItem>
-            <a href="#contact">Contato</a>
-          </LinkItem>
-        </LinkList>
-      </Column>
+const Footer: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-      {/* Contato */}
-      <Column>
-        <Heading>Informações de Contato</Heading>
-        <ContactItem>
-          <strong>Endereço:</strong> Morumbi, São Paulo - SP
-        </ContactItem>
-        <ContactItem>
-          <strong>Telefone:</strong> (11) 96779-6576
-        </ContactItem>
-        <WAButtonFooter 
-          href="https://wa.me/5511967796576?text=Ol%C3%A1%2C%20NPA!%20Vim%20pelo%20site%20e%20quero%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.%20Podem%20me%20ajudar%3F" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'footer' })}
-        >
-          <FaWhatsapp size={8} />
-          Falar no WhatsApp
-        </WAButtonFooter>
+  const handleNavClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    if (location.pathname === '/residencial') {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(`/residencial#${id}`);
+    }
+  };
 
-        <ContactItem>
-          <strong>E-mail:</strong> contato@napedroantonio.com.br
-        </ContactItem>
-        <SocialIcons>
-          <a href="https://www.google.com/maps/search/?api=1&query=Construção+e+reforma+no+Morumbi+NapedroAntonio" target="_blank" rel="noopener noreferrer">
-            <FaGlobe />
-          </a>
-        </SocialIcons>
-      </Column>
+  const getWhatsAppURL = () => {
+    const base = "https://wa.me/5511967796576?text=";
+    let message = "Olá! Gostaria de entender como vocês trabalham com projetos e orçamentos.";
+    
+    if (location.pathname === '/empresas') {
+      message = "Olá! Gostaria de uma consultoria B2B estratégica para minha empresa. Foco em ROI e prazos.";
+    } else if (location.pathname.startsWith('/energia-solar')) {
+      message = "Olá! Tenho interesse em energia solar para reduzir meus custos. Gostaria de um orçamento.";
+    } else if (location.pathname === '/residencial') {
+      message = "Olá! Gostaria de um orçamento para construção ou reforma residencial.";
+    }
+    
+    return `${base}${encodeURIComponent(message)}`;
+  };
 
-    </FooterInner>
+  return (
+    <FooterContainer>
+      <FooterInner>
+        {/* Sobre Nós */}
+        <Column>
+          <Heading>Sobre Nós</Heading>
+          <LogoContainer>
+            <img src={TratorIcon} alt="Ícone Trator" /> Construído
+          </LogoContainer>
+          <Text>
+            Conte com a nossa experiência e dedicação para construir ou renovar o seu espaço. Transformamos seus sonhos em realidade com qualidade e segurança.
+          </Text>
+        </Column>
 
-    <Divider />
+        {/* Links da Empresa */}
+        <Column>
+          <Heading>Links da Empresa</Heading>
+          <LinkList>
+            <LinkItem>
+              <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Home</a>
+            </LinkItem>
+            <LinkItem>
+              <a href="/residencial" onClick={(e) => handleNavClick(e, 'services')}>Serviços</a>
+            </LinkItem>
+            <LinkItem>
+              <a href="/residencial" onClick={(e) => handleNavClick(e, 'testimonials')}>Depoimentos</a>
+            </LinkItem>
+            <LinkItem>
+              <a href="/residencial" onClick={(e) => handleNavClick(e, 'consultation')}>Contato</a>
+            </LinkItem>
+          </LinkList>
+        </Column>
 
-    <FooterBottom>
-      © {new Date().getFullYear()} NPA — Construção e Reformas. Todos os direitos reservados.
-      <br />
-      <a href="#faq">FAQ</a> | <a href="#contact">Contato</a> | <a href="#services">Serviços</a>
-    </FooterBottom>
-  </FooterContainer>
-);
+        {/* Contato */}
+        <Column>
+          <Heading>Informações de Contato</Heading>
+          <ContactItem>
+            <strong>Endereço:</strong> Morumbi, São Paulo - SP
+          </ContactItem>
+          <ContactItem>
+            <strong>Telefone:</strong> (11) 96779-6576
+          </ContactItem>
+          <WAButtonFooter 
+            href={getWhatsAppURL()} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={() => window.gtag('event', 'click_whatsapp', { event_category: 'contato', event_label: 'footer' })}
+          >
+            <FaWhatsapp size={8} />
+            Falar no WhatsApp
+          </WAButtonFooter>
+
+          <ContactItem>
+            <strong>E-mail:</strong> contato@napedroantonio.com.br
+          </ContactItem>
+          <SocialIcons>
+            <a href="https://www.google.com/maps/search/?api=1&query=Construção+e+reforma+no+Morumbi+NapedroAntonio" target="_blank" rel="noopener noreferrer">
+              <FaGlobe />
+            </a>
+          </SocialIcons>
+        </Column>
+
+      </FooterInner>
+
+      <Divider />
+
+      <FooterBottom>
+        © {new Date().getFullYear()} NPA — Construção e Reformas. Todos os direitos reservados.
+        <br />
+        <a href="/residencial" onClick={(e) => handleNavClick(e, 'faq')}>FAQ</a> | 
+        <a href="/residencial" onClick={(e) => handleNavClick(e, 'consultation')}>Contato</a> | 
+        <a href="/residencial" onClick={(e) => handleNavClick(e, 'services')}>Serviços</a>
+      </FooterBottom>
+    </FooterContainer>
+  );
+};
+
 
 export default Footer;

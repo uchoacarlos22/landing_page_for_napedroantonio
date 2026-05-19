@@ -3,19 +3,19 @@ import styled from "styled-components";
 import { colors } from "../theme";
 
 // ====== Imagens ======
-import banheiroAntes from "../assets/images/carousel-images/banheiro-antes.png";
-import banheiroDepois from "../assets/images/carousel-images/banheiro-depois.png";
-import casaAntes from "../assets/images/carousel-images/casa-antes.png";
-import casaDepois from "../assets/images/carousel-images/casa-depois.png";
-import cozinhaAntes from "../assets/images/carousel-images/cozinha-antes.png";
-import cozinhaDepois from "../assets/images/carousel-images/cozinha-depois.png";
-import quintalAntes from "../assets/images/carousel-images/quintal-antes.png";
-import quintalDepois from "../assets/images/carousel-images/quintal-depois.png";
-import salaAntes from "../assets/images/carousel-images/sala-antes.png";
-import salaDepois from "../assets/images/carousel-images/sala-depois.png";
+import banheiroAntes from "../assets/images/carousel-images/banheiro-antes.webp";
+import banheiroDepois from "../assets/images/carousel-images/banheiro-depois.webp";
+import casaAntes from "../assets/images/carousel-images/casa-antes.webp";
+import casaDepois from "../assets/images/carousel-images/casa-depois.webp";
+import cozinhaAntes from "../assets/images/carousel-images/cozinha-antes.webp";
+import cozinhaDepois from "../assets/images/carousel-images/cozinha-depois.webp";
+import quintalAntes from "../assets/images/carousel-images/quintal-antes.webp";
+import quintalDepois from "../assets/images/carousel-images/quintal-depois.webp";
+import salaAntes from "../assets/images/carousel-images/sala-antes.webp";
+import salaDepois from "../assets/images/carousel-images/sala-depois.webp";
 
 // Exemplo de logo
-import logo from "../assets/images/npa_logo_sf.png";
+import logo from "../assets/images/npa_logo_sf.webp";
 
 interface SlideData {
   beforeSrc: string;

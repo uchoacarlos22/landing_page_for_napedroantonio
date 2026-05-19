@@ -8,11 +8,12 @@ import arquitetura from "../assets/images/arquitetura.svg";
 import integracao from "../assets/images/integracao.svg";
 import consultoria from "../assets/images/consultoria.svg";
 import planejamento from "../assets/images/planejamento.svg";
-import servicesBackground from "../assets/images/services_back.jpg";
+import servicesBackground from "../assets/images/services_back.webp";
 
 const ServicesSection = styled.section.attrs(() => ({ id: "services" }))`
   position: relative;
-  background: linear-gradient(${colors.primary}50, ${colors.primary}70),
+  background:
+    linear-gradient(${colors.primary}50, ${colors.primary}70),
     url(${servicesBackground}) center/cover no-repeat;
   background-attachment: scroll;
   padding: 80px 20px;
@@ -47,7 +48,8 @@ const ServicesTitle = styled.h2`
 `;
 
 const ServicesSubtitle = styled.p`
-  font-size: 1rem;
+  font-size: 1.3rem;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 60px;
   max-width: 600px;
@@ -86,11 +88,14 @@ const ServiceCard = styled.div`
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: inset 0 -3px 0 0 ${colors.secondary},
+    box-shadow:
+      inset 0 -3px 0 0 ${colors.secondary},
       inset 3px 0 0 0 ${colors.secondary},
       0 10px 30px rgba(0, 0, 0, 0.3);
   }
@@ -135,7 +140,6 @@ const ServiceCard = styled.div`
   }
 `;
 
-
 const ServiceIcon = styled.img`
   width: 64px;
   height: 64px;
@@ -175,34 +179,34 @@ const ServiceDescription = styled.p`
 const Services: React.FC = () => {
   const services = [
     {
-      icon: construcao,
-      title: "Construção Civil",
-      desc: "Execução de obras residenciais e comerciais com alto padrão, segurança e profissionais qualificados.",
+      icon: renovacao,
+      title: "Reforma de Apartamentos em SP",
+      desc: "Transformamos ambientes com reformas completas, acabamento de excelência e atenção aos detalhes no seu apartamento na capital.",
     },
     {
-      icon: renovacao,
-      title: "Reformas",
-      desc: "Transformamos ambientes com reformas completas, acabamento de excelência e atenção aos detalhes.",
+      icon: construcao,
+      title: "Construção de Casas em São Paulo",
+      desc: "Execução de construção residencial em São Paulo com alto padrão, segurança jurídica e construtiva.",
     },
     {
       icon: arquitetura,
-      title: "Projetos",
-      desc: "Desenvolvimento de projetos arquitetônicos e estruturais personalizados, adaptados ao seu estilo.",
+      title: "Reforma de Alto Padrão — Morumbi",
+      desc: "Especialistas em projetos arquitetônicos de alto luxo e modernização de residências na zona sul e Morumbi.",
     },
     {
       icon: integracao,
-      title: "Manutenção",
-      desc: "Serviços preventivos e corretivos elétricos, hidráulicos e estruturais, com agilidade e eficiência.",
-    },
-    {
-      icon: consultoria,
-      title: "Incorporação",
-      desc: "Gestão completa de empreendimentos — do planejamento à entrega — com foco em qualidade e transparência.",
+      title: "Manutenção Predial Contratada",
+      desc: "Serviços preventivos e corretivos para residências e condomínios, garantindo agilidade e eficiência predial.",
     },
     {
       icon: planejamento,
-      title: "Orçamentos",
-      desc: "Orçamentos detalhados e personalizados, garantindo clareza, custo-benefício e confiança.",
+      title: "Instalações Elétricas e Hidráulicas",
+      desc: "Infraestrutura completa e segura, fundamental para qualquer reforma residencial ou comercial em SP.",
+    },
+    {
+      icon: consultoria,
+      title: "Projetos e Laudos Técnicos",
+      desc: "Desenvolvimento de projetos, emissão de ART, RRT e laudos de vizinhança essenciais para sua obra.",
     },
   ];
 
