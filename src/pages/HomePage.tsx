@@ -276,6 +276,7 @@ const HomePage: React.FC = () => {
                 src={heroRes}
                 alt="Residencial"
                 className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
+                style={{ filter: "brightness(1.5)" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#201f20] via-[#201f20]/70 to-transparent" />
               {/* icon */}
@@ -295,7 +296,7 @@ const HomePage: React.FC = () => {
               <h3 className="relative z-10 text-2xl font-black text-[#e5e2e3] uppercase mb-6">
                 RESIDENCIAL
               </h3>
-              <p className="relative z-10 text-[#d1c5b4] text-sm leading-relaxed mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="relative z-10 text-[#d1c5b4] text-sm leading-relaxed mb-6 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                 Engenharia estrutural sob medida para projetos de alto padrão e
                 vivência exclusiva.
               </p>
@@ -313,6 +314,7 @@ const HomePage: React.FC = () => {
                 src={heroBusiness}
                 alt="Empresas"
                 className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700"
+                style={{ filter: "brightness(1.5)" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#353436] via-[#353436]/80 to-transparent" />
               <div className="absolute top-4 right-4 z-10">
@@ -360,6 +362,7 @@ const HomePage: React.FC = () => {
                 src={heroSolar}
                 alt="Energia Solar"
                 className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
+                style={{ filter: "brightness(1.5)" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#201f20] via-[#201f20]/70 to-transparent" />
               {/* icon */}
@@ -378,7 +381,7 @@ const HomePage: React.FC = () => {
               <h3 className="relative z-10 text-xl md:text-2xl font-black text-[#e5e2e3] uppercase mb-4 md:mb-6">
                 ENERGIA SOLAR
               </h3>
-              <p className="relative z-10 text-[#d1c5b4] text-sm leading-relaxed mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="relative z-10 text-[#d1c5b4] text-sm leading-relaxed mb-6 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                 Captura de energia de última geração para instalações de escala
                 industrial e comercial.
               </p>

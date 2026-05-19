@@ -36,11 +36,13 @@ const StyledBackgroundImage = styled.div`
   background-size: cover;
   background-position: center;
 
+  filter: brightness(1.6);
+
   transition: filter 0.5s ease;
 
   @media (prefers-reduced-motion: no-preference) {
     &:hover {
-      filter: brightness(1.35);
+      filter: brightness(1.8);
     }
   }
 `;

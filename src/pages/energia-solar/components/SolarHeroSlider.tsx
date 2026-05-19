@@ -123,9 +123,10 @@ const SolarHeroSlider: React.FC = () => {
             style={{
               transform: i === current ? "scale(1.08)" : "scale(1)",
               transition: "transform 8s ease-out",
+              filter: "brightness(1.3)",
             }}
           />
-          <div className="absolute inset-0 bg-primary/45" />
+          <div className="absolute inset-0 bg-primary/25" />
         </div>
       ))}
 

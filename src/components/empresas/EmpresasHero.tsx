@@ -11,13 +11,14 @@ export const EmpresasHero: React.FC = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${b2bHero})`,
+          filter: "brightness(1.8)",
         }}
         role="img"
         aria-label="Reforma comercial em andamento"
       />
 
       {/* OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/85 via-[#051424]/70 to-[#051424]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/55 via-[#051424]/40 to-[#051424]" />
 
       {/* GRID EFFECT */}
       <div className="absolute inset-0 opacity-[0.04]">
